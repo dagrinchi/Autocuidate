@@ -1,0 +1,10 @@
+
+.DS_Store
+
+www/.DS_Store
+
+*.xcuserstate
+
+*.xcscheme
+
+*.plist
