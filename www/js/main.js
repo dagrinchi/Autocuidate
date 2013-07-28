@@ -11,11 +11,7 @@ var app = {
 	data: [],
 
 	selection: {
-		edad: {
-			cols: {
-				id: []
-			}
-		},
+		edad: [],
 		category: [{
 			id: "btn_pregnancy",
 			column: "mi_embarazo",
@@ -66,6 +62,46 @@ var app = {
 
 	buttonEvents: function() {
 		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
+		sql = "(edad like '%5%' or edad like '%recien%')";
+
+		$("#ageContinue").on("click", function(e) {
+			if (app.selection.edad.length > 0) {
+				app.openDB(queryActivities);
+			} else {
+				navigator.notification.alert('Debe seleccionar al menos una edad!', function() {
+					return false;
+				}, 'Atención', 'Aceptar');
+			}
+		});
+
+		function queryActivities(tx) {
+			var category = [];
+			$.each(app.selection.category, function(k1, v1) {
+				if (v1.value === true) {
+					category.push(v1);
+				}
+			});
+			var sql = "SELECT * FROM datos ";
+			$.each(category, function(k1, v1) {
+				if (k1 === 0) {
+					sql += "WHERE " + v1.column + " = 'X' ";
+				} else {
+					sql += "AND " + v1.column + " = 'X' ";
+				}
+			});
+			sql += "AND (";
+			$.each(app.selection.edad, function(k2, v2) {
+				if (k2 === 0) {
+					sql += "edad LIKE '" + v2 + "' ";
+				} else {
+					sql += "OR edad LIKE '" + v2 + "' ";
+				}
+			});
+			sql += ")";
+
+			tx.executeSql(sql, [], app.ent.activities, app.errorCB);
+		}
+
 		$("#startQuery").on("click", function(e) {
 			var selection = [];
 			$.each(app.selection.category, function(k, v) {
@@ -85,11 +121,6 @@ var app = {
 
 		function queryAges(tx) {
 			console.log("queryAges: Consultando edades!");
-			var sql = buildSQL();
-			tx.executeSql(sql, [], app.ent.ages, app.errorCB);
-		}
-
-		function buildSQL() {
 			var selection = [];
 			var sql = "SELECT RowKey, edad FROM datos ";
 			$.each(app.selection.category, function(k1, v1) {
@@ -107,8 +138,7 @@ var app = {
 			});
 
 			sql += "GROUP BY edad";
-			console.log(sql);
-			return sql;
+			tx.executeSql(sql, [], app.ent.ages, app.errorCB);
 		}
 
 		var category = app.selection.category;
@@ -322,7 +352,7 @@ var app = {
 			var html = '<legend>Seleccione uno varias rangos de edades:</legend> \n';
 
 			for (var i = 0; i < len; i++) {
-				html += '<input type="checkbox" data-vista="edad" data-col="edad" name="edad-' + results.rows.item(i).RowKey + '" id="edad-' + results.rows.item(i).RowKey + '" value="' + results.rows.item(i).RowKey + '"/>';
+				html += '<input type="checkbox" data-vista="edad" name="edad-' + results.rows.item(i).RowKey + '" id="edad-' + results.rows.item(i).RowKey + '" value="' + results.rows.item(i).edad + '"/>';
 				html += '<label for="edad-' + results.rows.item(i).RowKey + '">' + results.rows.item(i).edad + '</label>';
 			}
 
@@ -331,12 +361,29 @@ var app = {
 
 			app.hideLoadingBox();
 			app.registerInputs(list);
+		},
+		activities: function(tx, results) {
+			console.log("ent.activities: Construyendo listado actividades!");
+
+			var list = "#activityList";
+			var len = results.rows.length;
+			var html = "";
+
+			for (var i = 0; i < len; i++) {
+				html += '<li><a href="#"><h1 style="white-space: normal;">' + results.rows.item(i).actividad_de_prevencion;
+				html += '</h1><p>' + results.rows.item(i).titulo + '</p></a></li>';
+			}
+
+			$(list).html(html).trigger('create');
+			$.mobile.changePage("#activities");
+
+			app.hideLoadingBox();
 		}
 	},
 
 	registerInputs: function(list) {
 		console.log("registerInputs: Registrando checkboxes!");
-		$(list + " : checkbox").on("click", app.eventCheckboxes);
+		$(list + " :checkbox").on("click", app.eventCheckboxes);
 	},
 
 	eventCheckboxes: function(e) {
@@ -344,9 +391,9 @@ var app = {
 		var $checkbox = $(this);
 
 		if ($checkbox.is(':checked')) {
-			app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].push($checkbox.val());
+			app.selection[$checkbox.data("vista")].push($checkbox.val());
 		} else {
-			app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].splice(app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].indexOf($checkbox.val()), 1);
+			app.selection[$checkbox.data("vista")].splice(app.selection[$checkbox.data("vista")].indexOf($checkbox.val()), 1);
 		}
 	},
 

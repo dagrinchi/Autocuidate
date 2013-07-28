@@ -85,14 +85,32 @@
         <!-- START LISTA DE EDADES -->
         <div data-role="dialog" id="ageDialog">
             <div data-role="header">
-                <h1>Selecciona un rango de edades</h1>
+                <h1>Edad</h1>
             </div>
             <div data-role="content">
                 <fieldset data-role="controlgroup" id="ageList"></fieldset>
-                <a href="#" data-role="button" data-icon="check">Aceptar</a>
+                <a id="ageContinue" href="#" data-role="button" data-icon="check">Aceptar</a>
             </div>
         </div>
         <!-- END LISTA DE EDADES -->
+        <!-- START LIST ACTIVITIES -->
+        <div data-role="page" id="activities">
+            <div data-role="header">
+                <h1>Actividad</h1>
+            </div>
+            <div data-role="content">
+                <ul data-role="listview" id="activityList"></ul>
+            </div>
+        </div>
+        <!-- END LIST ACTIVITIES -->
+        <!-- START DETAIL PAGE -->
+        <div data-role="dialog" id="datail">
+            <div data-role="header">
+                <h1></h1>
+            </div>
+            <div data-role="content"></div>
+        </div>
+        <!-- END DETAIL PAGE -->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
