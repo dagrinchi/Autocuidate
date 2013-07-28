@@ -10,9 +10,36 @@ var app = {
 
 	data: [],
 
-selection: {},
+	selection: {
+		category: [{
+			id: "btn_pregnancy",
+			column: "mi_embarazo",
+			quoteColumn: "frase_mi_embarazo",
+			value: false
+		}, {
+			id: "btn_mychildren",
+			column: "mis_hijos",
+			quoteColumn: "frasemis_hijos",
+			value: false
+		}, {
+			id: "btn_mysexlife",
+			column: "mi_vida_sexual_y_reproductiva",
+			quoteColumn: "frase_mi_vida_sexual_y_reproductiva",
+			value: false
+		}, {
+			id: "btn_mymouth",
+			column: "mi_boca",
+			quoteColumn: "frase_mi_boca",
+			value: false
+		}, {
+			id: "btn_myeyes",
+			column: "mis_ojos",
+			quoteColumn: "frase_mis_ojos",
+			value: false
+		}]
+	},
 
-  
+
 	init: function() {
 		console.log("init: Iniciando app!");
 		document.addEventListener("deviceready", app.onDeviceReady, false);
@@ -20,7 +47,7 @@ selection: {},
 
 	onDeviceReady: function() {
 		//window.localStorage.removeItem("updated");
-    app.buttonEvents();
+		app.buttonEvents();
 		console.log("onDeviceReady: Dispositivo listo!");
 
 		if (app.checkConnection()) {
@@ -32,26 +59,94 @@ selection: {},
 		}
 	},
 
-  buttonEvents: function(){
+	buttonEvents: function() {
+		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
+		$("#startQuery").on("click", function(e) {
+			e.preventDefault();
+			var selection = [];
+			$.each(app.selection.category, function(k, v) {
+				if (v.value === true) {
+					selection.push(v);
+				}
+			});
 
-    
-    var buttons = ["#btn_pregnancy","#btn_mychildren","#btn_mysexlife","#my_mouth","#btn_myeyes"];
-    
-    $.each(buttons,function(k,v){
-           var id = $(v).prop("id");
-           $(v).on("click",function(){
-                   app.selection["category"].push(id);
-                   for(i=0;i<app.selection.category.length;i++){
-                          if(app.selection.category[i]===id){
-                                
-                          }
-                   }
-                  })
-           });
-    
+			if (selection.length > 0) {
+				app.openDB(queryAges);
+			} else {
+				navigator.notification.alert('Debe seleccionar al menos una categoría!', function() {
+					return false;
+				}, 'Atención', 'Aceptar');
+			}
+		});
 
-  },
-  
+		function queryAges(tx) {
+			tx.executeSql(buildSQL(), [], successQuery, app.errorCB);
+		}
+
+		function buildSQL() {
+			var selection = [];
+			var sql = "SELECT edad FROM datos ";
+			$.each(app.selection.category, function(k1, v1) {
+				if (v1.value === true) {
+					selection.push(v1);
+				}
+			});
+
+			$.each(selection, function(k1, v1) {
+				if (k1 === 0) {
+					sql += "WHERE " + v1.column + " = 'X' ";
+				} else {
+					sql += "AND " + v1.column + " = 'X' ";
+				}
+			});
+			console.log(sql);
+			return sql;
+		}
+
+		function successQuery(tx, results) {
+			app.ent.ages(results);
+			app.hideLoadingBox();
+		}
+
+		var category = app.selection.category;
+		$.each(category, function(k0, v0) {
+			var btns = $("#" + v0.id).children();
+			if (v0.value) {
+				$(btns[1]).show();
+			} else {
+				$(btns[1]).hide();
+			}
+		});
+
+		$("#cat a").on("click", function(e) {
+			e.preventDefault();
+			var activeLayer = $(this).children();
+			$(activeLayer[1]).fadeToggle("fast", function() {
+				var layer = this;
+				$.each(category, function(k1, v1) {
+					if (v1.id === activeLayer.context.id) {
+						if ($(layer).css("display") === "none") {
+							v1.value = false;
+						} else {
+							v1.value = true;
+						}
+					}
+				});
+			});
+		});
+	},
+
+	buildSQL: function() {
+		var sql = "SELECT * FROM datos ";
+		$.each(app.selection, function() {
+
+		});
+	},
+
+	pageEvents: function() {
+		var pages = [""];
+	},
+
 	checkConnection: function() {
 		console.log("checkConnection: Comprobando conectividad a internet!");
 		var networkState = navigator.connection.type;
@@ -98,7 +193,7 @@ selection: {},
 			setTimeout(function() {
 				$.mobile.changePage("#cat");
 			}, 5000);
-			
+
 		} else {
 			app.load();
 		}
@@ -214,6 +309,14 @@ selection: {},
 
 	errorCB: function(tx, err) {
 		console.log("errorCB: Opps!: " + err.code);
+	},
+
+	ent: {
+		ages: function(results) {
+			for (var j = 0; j < results.rows.length; j++) {
+				console.log(results.rows.item(j).edad);
+			}
+		}
 	},
 
 	showLoadingBox: function(txt) {
