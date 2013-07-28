@@ -99,6 +99,8 @@ var app = {
 					sql += "AND " + v1.column + " = 'X' ";
 				}
 			});
+
+			sql += "GROUP BY edad";
 			console.log(sql);
 			return sql;
 		}
