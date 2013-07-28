@@ -11,6 +11,11 @@ var app = {
 	data: [],
 
 	selection: {
+		edad: {
+			cols: {
+				id: []
+			}
+		},
 		category: [{
 			id: "btn_pregnancy",
 			column: "mi_embarazo",
@@ -62,7 +67,6 @@ var app = {
 	buttonEvents: function() {
 		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
 		$("#startQuery").on("click", function(e) {
-			e.preventDefault();
 			var selection = [];
 			$.each(app.selection.category, function(k, v) {
 				if (v.value === true) {
@@ -80,12 +84,14 @@ var app = {
 		});
 
 		function queryAges(tx) {
-			tx.executeSql(buildSQL(), [], successQuery, app.errorCB);
+			console.log("queryAges: Consultando edades!");
+			var sql = buildSQL();
+			tx.executeSql(sql, [], app.ent.ages, app.errorCB);
 		}
 
 		function buildSQL() {
 			var selection = [];
-			var sql = "SELECT edad FROM datos ";
+			var sql = "SELECT RowKey, edad FROM datos ";
 			$.each(app.selection.category, function(k1, v1) {
 				if (v1.value === true) {
 					selection.push(v1);
@@ -105,11 +111,6 @@ var app = {
 			return sql;
 		}
 
-		function successQuery(tx, results) {
-			app.ent.ages(results);
-			app.hideLoadingBox();
-		}
-
 		var category = app.selection.category;
 		$.each(category, function(k0, v0) {
 			var btns = $("#" + v0.id).children();
@@ -118,21 +119,20 @@ var app = {
 			} else {
 				$(btns[1]).hide();
 			}
-		});
 
-		$("#cat a").on("click", function(e) {
-			e.preventDefault();
-			var activeLayer = $(this).children();
-			$(activeLayer[1]).fadeToggle("fast", function() {
-				var layer = this;
-				$.each(category, function(k1, v1) {
-					if (v1.id === activeLayer.context.id) {
-						if ($(layer).css("display") === "none") {
-							v1.value = false;
-						} else {
-							v1.value = true;
+			$("#" + v0.id).on("click", function(e) {
+				var activeLayer = $(this).children();
+				$(activeLayer[1]).fadeToggle("fast", function() {
+					var layer = this;
+					$.each(category, function(k1, v1) {
+						if (v1.id === activeLayer.context.id) {
+							if ($(layer).css("display") === "none") {
+								v1.value = false;
+							} else {
+								v1.value = true;
+							}
 						}
-					}
+					});
 				});
 			});
 		});
@@ -314,10 +314,39 @@ var app = {
 	},
 
 	ent: {
-		ages: function(results) {
-			for (var j = 0; j < results.rows.length; j++) {
-				console.log(results.rows.item(j).edad);
+		ages: function(tx, results) {
+			console.log("ent.ages: Construyendo listado edades!");
+
+			var list = "#ageList";
+			var len = results.rows.length;
+			var html = '<legend>Seleccione uno varias rangos de edades:</legend> \n';
+
+			for (var i = 0; i < len; i++) {
+				html += '<input type="checkbox" data-vista="edad" data-col="edad" name="edad-' + results.rows.item(i).RowKey + '" id="edad-' + results.rows.item(i).RowKey + '" value="' + results.rows.item(i).RowKey + '"/>';
+				html += '<label for="edad-' + results.rows.item(i).RowKey + '">' + results.rows.item(i).edad + '</label>';
 			}
+
+			$(list).html(html).trigger('create');
+			$.mobile.changePage( "#ageDialog", { role: "dialog" } );
+
+			app.hideLoadingBox();
+			app.registerInputs(list);
+		}
+	},
+
+	registerInputs: function(list) {
+		console.log("registerInputs: Registrando checkboxes!");
+		$(list + " : checkbox").on("click", app.eventCheckboxes);
+	},
+
+	eventCheckboxes: function(e) {
+		console.log("eventCheckboxes: Graba selección para checkboxes!");
+		var $checkbox = $(this);
+
+		if ($checkbox.is(':checked')) {
+			app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].push($checkbox.val());
+		} else {
+			app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].splice(app.selection[$checkbox.data("vista")]["cols"][$checkbox.data("col")].indexOf($checkbox.val()), 1);
 		}
 	},
 

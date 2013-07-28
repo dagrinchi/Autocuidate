@@ -14,17 +14,20 @@
         <title>Autocuidate</title>
     </head>
     <body>
+        <!-- START PAGE HOME -->
         <div data-role="page" id="home">
             <div data-role="header">
                 <h1>Autocuidate</h1>
             </div>
             <div data-role="content">
-                <p>home</p>
+                <p>POR FAVOR HACER LA INTRO AQUI</p>
             </div>
             <div data-role="footer">
                 
             </div>
         </div>
+        <!-- END PAGE HOME -->
+        <!-- START PAGE CATEGORY -->
         <div data-role="page" id="cat">
             <div data-role="header">
                 <h1>Autocuidate</h1>
@@ -78,17 +81,18 @@
                 <a href="#" id="startQuery">Continuar</a>
             </div>
         </div>
-        <div data-role="dialog" id="ageDialog" data-dismissible="false">
+        <!-- END PAGE CATEGORIAS -->
+        <!-- START LISTA DE EDADES -->
+        <div data-role="dialog" id="ageDialog">
             <div data-role="header">
                 <h1>Selecciona un rango de edades</h1>
             </div>
             <div data-role="content">
-                <h1>Edad</h1>
-            </div>
-            <div data-role="footer">
-                <a data-role="button" href="#">Continuar</a>
+                <fieldset data-role="controlgroup" id="ageList"></fieldset>
+                <a href="#" data-role="button" data-icon="check">Aceptar</a>
             </div>
         </div>
+        <!-- END LISTA DE EDADES -->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
