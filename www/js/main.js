@@ -73,7 +73,7 @@ var app = {
 		// navigator.splashscreen.hide();
 		if (app.checkUpdatedData()) {
 			setTimeout(function() {
-				$.mobile.changePage("#home");
+				$.mobile.changePage("#cat");
 			}, 5000);
 			//app.openDB(app.queryDB);
 		} else {
