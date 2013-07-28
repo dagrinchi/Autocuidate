@@ -10,6 +10,9 @@ var app = {
 
 	data: [],
 
+selection: {},
+
+  
 	init: function() {
 		console.log("init: Iniciando app!");
 		document.addEventListener("deviceready", app.onDeviceReady, false);
@@ -17,7 +20,7 @@ var app = {
 
 	onDeviceReady: function() {
 		//window.localStorage.removeItem("updated");
-
+    app.buttonEvents();
 		console.log("onDeviceReady: Dispositivo listo!");
 
 		if (app.checkConnection()) {
@@ -29,6 +32,26 @@ var app = {
 		}
 	},
 
+  buttonEvents: function(){
+
+    
+    var buttons = ["#btn_pregnancy","#btn_mychildren","#btn_mysexlife","#my_mouth","#btn_myeyes"];
+    
+    $.each(buttons,function(k,v){
+           var id = $(v).prop("id");
+           $(v).on("click",function(){
+                   app.selection["category"].push(id);
+                   for(i=0;i<app.selection.category.length;i++){
+                          if(app.selection.category[i]===id){
+                                
+                          }
+                   }
+                  })
+           });
+    
+
+  },
+  
 	checkConnection: function() {
 		console.log("checkConnection: Comprobando conectividad a internet!");
 		var networkState = navigator.connection.type;
@@ -75,7 +98,7 @@ var app = {
 			setTimeout(function() {
 				$.mobile.changePage("#cat");
 			}, 5000);
-			//app.openDB(app.queryDB);
+			
 		} else {
 			app.load();
 		}
