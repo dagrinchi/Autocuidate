@@ -38,6 +38,42 @@ div[data-role="header"] {
 	border: none;
 }
 
+#detailContent > h1 {
+	font-size: 1.2em;
+	padding: 0;
+}
+
+#detailContent fieldset .ui-btn-inner {
+	font-size: 10px;
+}
+
+#detailContent .ui-collapsible-content > p {
+	padding: 0;
+	margin: 0;
+}
+
+.gender {
+	background: url("../img/sexlife.png") no-repeat right top;
+	background-size: 20px;
+}
+
+.pregnancy {
+	background: url("../img/pregnant.png") no-repeat right top;
+	background-size: 20px;	
+}
+
+.ages {
+	background: url("../img/children.png") no-repeat right top;
+	background-size: 20px;
+}
+
+.image {
+	width: 100%;
+	height: 90px;
+	display: block;
+	position: absolute;
+}
+
 #home{
 	background-image: linear-gradient(bottom, #23BAF1 0%, #FFFFFF 100%);
 	background-image: -o-linear-gradient(bottom, #23BAF1 0%, #FFFFFF 100%);
