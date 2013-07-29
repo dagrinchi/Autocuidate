@@ -37,7 +37,57 @@ var app = {
 			column: "mis_ojos",
 			quoteColumn: "frase_mis_ojos",
 			value: false
-		}]
+		}],
+		clasif: {
+			femenino: {
+				id : "femenino",
+				value : ""
+			},
+			masculino: {
+				id : "masculino",
+				value : ""
+			},
+			en_condicion_embarazo: {
+				id : "en_condicion_embarazo",
+				value : ""
+			},
+			sin_condicion_embarazo: {
+				id : "sin_condicion_embarazo",
+				value : ""
+			},
+			no_aplica_condicion_embarazo: {
+				id : "no_aplica_condicion_embarazo",
+				value : ""
+			},
+			nins_10_anos: {
+				id : "nins_10_anos",
+				value : ""
+			},
+			mujer_joven_10_a_29_anios: {
+				id : "joven_10_a_29_anios",
+				value : ""
+			},
+			hombre_joven_10_a_29_anios: {
+				id : "joven_10_a_29_anios",
+				value : ""
+			},
+			hef_29_a_44_anios: {
+				id : "29_a_44_anios",
+				value : ""
+			},
+			mef_29_44_anios: {
+				id : "29_a_44_anios",
+				value : ""
+			},
+			hombre_adulto_45_anios: {
+				id : "adulto_45_anios",
+				value : ""
+			},
+			mujer_adulta_45_anios: {
+				id : "adulto_45_anios",
+				value : ""
+			}
+		}
 	},
 
 
@@ -151,7 +201,6 @@ var app = {
 		var category = app.selection.category;
 		$.each(category, function(k0, v0) {
 			var btns = $("#" + v0.id).children();
-			app.test = btns;
 			if (v0.value) {
 				$(btns[0]).show();
 			} else {
@@ -369,14 +418,34 @@ var app = {
 			$(list).empty();
 
 			for (var i = 0; i < len; i++) {
-				html += '<li><a href="#"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
+				html += '<li><a href="#" data-row="'+ results.rows.item(i).RowKey +'"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
 				html += '</h1><p>' + results.rows.item(i).titulo + '</p></a></li>';
 			}
 			$(list).append(html);
 			$.mobile.changePage("#activities");
 			app.hideLoadingBox();
 
-			$("#activityList").listview("refresh");
+			$(list).listview("refresh");
+			app.registerLinks(list);
+		},
+		detail: function(tx, results) {
+			var item = results.rows.item(0);
+			var comp1 = $("#detailContent").children();
+			var comp2 = $(comp1[2]).children();
+
+			$(comp1[1]).html(item.titulo);
+			$(comp2[0]).html(item.actividad_de_prevencion);
+			$(comp2[1]).html(item.descripcion_de_la_actividad);
+
+			$.each(app.selection.clasif, function(k1, v1) {
+				v1.value = item[k1];
+				if (v1.value === "SI") {
+					$("#" + v1.id).prop("checked", true);
+				}
+			});
+
+			$.mobile.changePage("#detail");
+			app.hideLoadingBox();
 		}
 	},
 
@@ -393,6 +462,22 @@ var app = {
 			app.selection[$checkbox.data("vista")].push($checkbox.val());
 		} else {
 			app.selection[$checkbox.data("vista")].splice(app.selection[$checkbox.data("vista")].indexOf($checkbox.val()), 1);
+		}
+	},
+
+	registerLinks: function(list) {
+		$(list + " a").on("click", app.eventLinks);
+	},
+
+	eventLinks: function(e) {
+		console.log("eventLinks: Evento del link!");
+		var $link = $(this);
+		app.openDB(queryDetail);
+
+		function queryDetail(tx) {
+			var sql = "SELECT * FROM datos WHERE RowKey = '" + $link.data("row") + "'";
+			console.log(sql);
+			tx.executeSql(sql, [], app.ent.detail, app.errorCB);
 		}
 	},
 

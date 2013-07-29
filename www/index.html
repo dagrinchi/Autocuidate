@@ -89,11 +89,45 @@
         </div>
         <!-- END LIST ACTIVITIES -->
         <!-- START DETAIL PAGE -->
-        <div data-role="dialog" id="detail">
+        <div data-role="page" id="detail">
             <div data-role="header">
-                <h1></h1>
+                <a href="#activities" class="ui-btn-left" data-icon="back">Atras</a>
             </div>
-            <div data-role="content"></div>
+            <div data-role="content" id="detailContent">
+                <div class="image"></div>
+                <h1></h1>
+                <div data-role="collapsible" data-collapsed="false" data-theme="b">
+                    <h4></h4>
+                    <p></p>
+                </div>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Género:</legend>
+                    <input type="checkbox" name="femenino" id="femenino">
+                    <label for="femenino">Femenino</label>
+                    <input type="checkbox" name="masculino" id="masculino">
+                    <label for="masculino">Masculino</label>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Condición de embarazo:</legend>
+                    <input type="checkbox" name="en_condicion_embarazo" id="en_condicion_embarazo">
+                    <label for="en_condicion_embarazo">Si</label>
+                    <input type="checkbox" name="sin_condicion_embarazo" id="sin_condicion_embarazo">
+                    <label for="sin_condicion_embarazo">No</label>
+                    <input type="checkbox" name="no_aplica_condicion_de_embarazo" id="no_aplica_condicion_de_embarazo">
+                    <label for="no_aplica_condicion_de_embarazo">No aplica</label>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Rango de edad en años:</legend>
+                    <input type="checkbox" name="nins_10_anos" id="nins_10_anos">
+                    <label for="nins_10_anos">0-10</label>
+                    <input type="checkbox" name="joven_10_a_29_anios" id="joven_10_a_29_anios">
+                    <label for="joven_10_a_29_anios">10-29</label>
+                    <input type="checkbox" name="29_a_44_anios" id="29_a_44_anios">
+                    <label for="29_a_44_anios">29-44</label>
+                    <input type="checkbox" name="adulto_45_anios" id="adulto_45_anios">
+                    <label for="adulto_45_anios">Más de 45</label>
+                </fieldset>
+            </div>
         </div>
         <!-- END DETAIL PAGE -->
         <script type="text/javascript" src="cordova.js"></script>

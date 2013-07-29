@@ -33,3 +33,24 @@ div[data-role="header"] {
 	background-size: 240px;
 	border: none;
 }
+
+#detailContent > h1 {
+	font-size: 1.2em;
+	padding: 0;
+}
+
+#detailContent fieldset .ui-btn-inner {
+	font-size: 10px;
+}
+
+#detailContent .ui-collapsible-content > p {
+	padding: 0;
+	margin: 0;
+}
+
+.image {
+	width: 100%;
+	height: 90px;
+	display: block;
+	position: absolute;
+}
