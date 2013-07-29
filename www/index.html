@@ -25,7 +25,7 @@
         <div data-role="page" id="cat">
             <div data-role="header">
                 <h1>Autocuidate</h1>
-                <a href="#help-step1" class="ui-btn-right" data-icon="grid">Ayuda</a>
+                <a href="#help_step1" class="ui-btn-right" data-icon="grid">Ayuda</a>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true">
@@ -67,22 +67,23 @@
         </div>
         <!-- END PAGE CATEGORIAS -->
         <!-- START LISTA DE EDADES -->
-        <div data-role="dialog" id="ageDialog">
+        <div data-role="page" id="agePage">
             <div data-role="header">
+                <a href="#cat" class="ui-btn-left" data-icon="back">Atras</a>
                 <h1>Edad</h1>
             </div>
             <div data-role="content">
                 <fieldset data-role="controlgroup" id="ageList"></fieldset>
             </div>
             <div data-role="footer" class="ui-bar" data-position="fixed">
-                <a id="ageContinue" href="#" data-icon="check" data-theme="b" style="width: 100%;">Aceptar</a>
+                <a id="ageContinue" href="#" data-icon="check" data-theme="b" style="width: 90%;">Aceptar</a>
             </div>
         </div>
         <!-- END LISTA DE EDADES -->
         <!-- START LIST ACTIVITIES -->
         <div data-role="page" id="activities">
             <div data-role="header">
-                <a href="#cat" class="ui-btn-left" data-icon="back">Atras</a>
+                <a href="#agePage" class="ui-btn-left" data-icon="back">Atras</a>
                 <h1>Actividad</h1>
             </div>
             <div data-role="content">

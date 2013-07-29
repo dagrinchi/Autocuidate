@@ -49,6 +49,7 @@ var app = {
 	onDeviceReady: function() {
 		//window.localStorage.removeItem("updated");
 		app.buttonEvents();
+		app.pageEvents();
 		console.log("onDeviceReady: Dispositivo listo!");
 
 		if (app.checkConnection()) {
@@ -61,8 +62,8 @@ var app = {
 	},
 
 	pageEvents: function() {
-		$(document).delegate("#ageDialog", "pageinit", function() {
-			console.log(app.selection.edad.length);
+		$("#cat").on("pagebeforeshow", function() {
+			app.selection.edad = [];
 		});
 	},
 
@@ -353,7 +354,7 @@ var app = {
 			}
 
 			$(list).html(html).trigger('create');
-			$.mobile.changePage( "#ageDialog", { role: "dialog" } );
+			$.mobile.changePage("#agePage");
 
 			app.hideLoadingBox();
 			app.registerInputs(list);
