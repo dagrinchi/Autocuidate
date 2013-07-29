@@ -86,9 +86,10 @@ body {
 
 /* Portrait layout (default) */
 .app {
-    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    background:url(../img/logo2.png) no-repeat center top; /* 170px x 200px */
     position:absolute;             /* position in the center of the screen */
     left:49%;
+    right: 50%;
     top:50%;
     height:50px;                   /* text area height */
     width:250px;                   /* text area width */
@@ -97,7 +98,7 @@ body {
     /*http://stackoverflow.com/questions/6028737/resize-background-image-in-div-using-css*/            
     background-size: contain;
     text-align:center;
-    padding:90px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    padding:210px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
     margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
@@ -113,19 +114,19 @@ body {
 }
 
 .logoEntidad{
-	background:url(../img/minsalud.png) no-repeat center top; /* 170px x 200px */
-	position:absolute;             /* position in the center of the screen */
+	/*background:url(../img/minsalud.png) no-repeat center top; 
+	position:absolute;             
     left:49%;
     top:50%;
-    height:50px;                   /* text area height */
-    width:250px;                   /* text area width */
+    height:50px;                   
+    width:250px;   */                
     /*background-position: 50% 50%;*/
     /*background-size: 100%;*/      /*it works good but, expand the image some bad */
     /*http://stackoverflow.com/questions/6028737/resize-background-image-in-div-using-css*/            
-    background-size: contain;
-    text-align:center;
-    padding:90px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+   /* background-size: contain;
+    text-align:center;*/
+   /* padding:90px 0px 0px 0px;*/     /* image height is 200px (bottom 20px are overlapped with text) */
+    /*margin:-115px 0px 0px -112px;*/  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
 
