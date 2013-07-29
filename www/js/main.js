@@ -55,8 +55,8 @@ var app = {
 				id : "sin_condicion_embarazo",
 				value : ""
 			},
-			no_aplica_condicion_embarazo: {
-				id : "no_aplica_condicion_embarazo",
+			no_aplica_condicion_de_embarazo: {
+				id : "no_aplica_condicion_de_embarazo",
 				value : ""
 			},
 			nins_10_anos: {
@@ -119,6 +119,11 @@ var app = {
 
 	buttonEvents: function() {
 		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
+
+		$.each(app.selection.clasif, function(k, v) {
+			$("#" + v.id).prop("disabled", true);
+		});
+
 		$("#ageContinue").on("click", function(e) {
 			if (app.selection.edad.length > 0) {
 				app.openDB(queryActivities);
@@ -434,13 +439,15 @@ var app = {
 			var comp2 = $(comp1[2]).children();
 
 			$(comp1[1]).html(item.titulo);
-			$(comp2[0]).html(item.actividad_de_prevencion);
-			$(comp2[1]).html(item.descripcion_de_la_actividad);
+			$(comp2[0]).html(item.actividad_de_prevencion).trigger("create");
+			$(comp2[1]).html(item.descripcion_de_la_actividad).trigger("create");
+			$("#detailContent .ui-disabled").removeClass("ui-disabled");
 
 			$.each(app.selection.clasif, function(k1, v1) {
 				v1.value = item[k1];
+				var $btn = $("#" + v1.id);
 				if (v1.value === "SI") {
-					$("#" + v1.id).prop("checked", true);
+					$btn.prop("checked", true);
 				}
 			});
 

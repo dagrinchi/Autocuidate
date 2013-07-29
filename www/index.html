@@ -60,8 +60,12 @@
                     </li>
                 </ul>
             </div>
-            <div data-role="footer" class="ui-bar" data-position="fixed">
-                <a id="startQuery" href="#" data-icon="check" data-theme="b" style="width: 90%;">Continuar</a>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a id="startQuery" href="#" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- END PAGE CATEGORIAS -->
@@ -73,8 +77,12 @@
             <div data-role="content">
                 <fieldset data-role="controlgroup" id="ageList"></fieldset>
             </div>
-            <div data-role="footer" class="ui-bar" data-position="fixed">
-                <a id="ageContinue" href="#" data-icon="check" data-theme="b" style="width: 90%;">Aceptar</a>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a id="ageContinue" href="#" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- END LISTA DE EDADES -->
@@ -85,6 +93,13 @@
             </div>
             <div data-role="content">
                 <ul data-role="listview" id="activityList"></ul>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- END LIST ACTIVITIES -->
@@ -98,16 +113,16 @@
                 <h1></h1>
                 <div data-role="collapsible" data-collapsed="false" data-theme="b">
                     <h4></h4>
-                    <p></p>
+                    <p style="text-align: justify;"></p>
                 </div>
-                <fieldset data-role="controlgroup" data-type="horizontal">
+                <fieldset data-role="controlgroup" data-type="horizontal" class="gender">
                     <legend>Género:</legend>
                     <input type="checkbox" name="femenino" id="femenino">
                     <label for="femenino">Femenino</label>
                     <input type="checkbox" name="masculino" id="masculino">
                     <label for="masculino">Masculino</label>
                 </fieldset>
-                <fieldset data-role="controlgroup" data-type="horizontal">
+                <fieldset data-role="controlgroup" data-type="horizontal" class="pregnancy">
                     <legend>Condición de embarazo:</legend>
                     <input type="checkbox" name="en_condicion_embarazo" id="en_condicion_embarazo">
                     <label for="en_condicion_embarazo">Si</label>
@@ -116,7 +131,7 @@
                     <input type="checkbox" name="no_aplica_condicion_de_embarazo" id="no_aplica_condicion_de_embarazo">
                     <label for="no_aplica_condicion_de_embarazo">No aplica</label>
                 </fieldset>
-                <fieldset data-role="controlgroup" data-type="horizontal">
+                <fieldset data-role="controlgroup" data-type="horizontal" class="ages">
                     <legend>Rango de edad en años:</legend>
                     <input type="checkbox" name="nins_10_anos" id="nins_10_anos">
                     <label for="nins_10_anos">0-10</label>
@@ -127,6 +142,13 @@
                     <input type="checkbox" name="adulto_45_anios" id="adulto_45_anios">
                     <label for="adulto_45_anios">Más de 45</label>
                 </fieldset>
+            </div>
+            <div data-role="footer" data-position="fixed">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <!-- END DETAIL PAGE -->
