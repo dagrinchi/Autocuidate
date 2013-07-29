@@ -274,7 +274,7 @@ var app = {
 		// navigator.splashscreen.hide();
 		if (app.checkUpdatedData()) {
 			setTimeout(function() {
-				$.mobile.changePage("#home");
+				$.mobile.changePage("#cat");
 			}, 5000);
 
 		} else {
@@ -380,7 +380,7 @@ var app = {
 		console.log("successCB: Guardando fecha de actualización!");
 		var updated = new Date();
 		window.localStorage.setItem("updated", updated);
-		$.mobile.changePage("#help_step1");
+		$.mobile.changePage("#cat");
 	},
 
 	openDB: function(q) {

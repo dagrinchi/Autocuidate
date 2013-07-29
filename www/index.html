@@ -30,9 +30,7 @@
         <!-- END PAGE HOME -->
         <!-- START PAGE CATEGORY -->
         <div data-role="page" id="cat">
-            <div data-role="header">
-                <a href="#help_step1" class="ui-btn-right" data-icon="grid">Ayuda</a>
-            </div>
+            <div data-role="header"></div>
             <div data-role="content">
                 <ul data-role="listview">
                     <li data-icon="false"><a href="#" id="btn_pregnancy">
@@ -78,15 +76,14 @@
         <!-- END PAGE CATEGORIAS -->
         <!-- START LISTA DE EDADES -->
         <div data-role="page" id="agePage">
-            <div data-role="header">
-                <a href="#cat" class="ui-btn-left" data-icon="back">Atras</a>
-            </div>
+            <div data-role="header"></div>
             <div data-role="content">
                 <fieldset data-role="controlgroup" id="ageList"></fieldset>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <li><a href="#cat" data-icon="back" data-theme="b" data-iconpos="top">Atras</a></li>
                         <li><a id="ageContinue" href="#" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
                     </ul>
                 </div>
@@ -95,15 +92,14 @@
         <!-- END LISTA DE EDADES -->
         <!-- START LIST ACTIVITIES -->
         <div data-role="page" id="activities">
-            <div data-role="header">
-                <a href="#agePage" class="ui-btn-left" data-icon="back">Atras</a>
-            </div>
+            <div data-role="header"></div>
             <div data-role="content">
                 <ul data-role="listview" id="activityList"></ul>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <li><a href="#agePage" data-icon="back" data-theme="b" data-iconpos="top">Atras</a></li>
                         <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
                     </ul>
                 </div>
@@ -112,9 +108,7 @@
         <!-- END LIST ACTIVITIES -->
         <!-- START DETAIL PAGE -->
         <div data-role="page" id="detail">
-            <div data-role="header">
-                <a href="#activities" class="ui-btn-left" data-icon="back">Atras</a>
-            </div>
+            <div data-role="header"></div>
             <div data-role="content" id="detailContent">
                 <div class="image"></div>
                 <h1></h1>
@@ -153,6 +147,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <li><a href="#activities" data-icon="back" data-theme="b" data-iconpos="top">Atras</a></li>
                         <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
                     </ul>
                 </div>
