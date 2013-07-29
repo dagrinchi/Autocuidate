@@ -60,10 +60,14 @@ var app = {
 		}
 	},
 
+	pageEvents: function() {
+		$(document).delegate("#ageDialog", "pageinit", function() {
+			console.log(app.selection.edad.length);
+		});
+	},
+
 	buttonEvents: function() {
 		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
-		sql = "(edad like '%5%' or edad like '%recien%')";
-
 		$("#ageContinue").on("click", function(e) {
 			if (app.selection.edad.length > 0) {
 				app.openDB(queryActivities);
@@ -86,19 +90,20 @@ var app = {
 				if (k1 === 0) {
 					sql += "WHERE " + v1.column + " = 'X' ";
 				} else {
-					sql += "AND " + v1.column + " = 'X' ";
+					sql += "OR " + v1.column + " = 'X' ";
 				}
 			});
 			sql += "AND (";
 			$.each(app.selection.edad, function(k2, v2) {
 				if (k2 === 0) {
-					sql += "edad LIKE '" + v2 + "' ";
+					sql += "edad = '" + v2 + "' ";
 				} else {
-					sql += "OR edad LIKE '" + v2 + "' ";
+					sql += "OR edad = '" + v2 + "' ";
 				}
 			});
 			sql += ")";
 
+			console.log(sql);
 			tx.executeSql(sql, [], app.ent.activities, app.errorCB);
 		}
 
@@ -133,26 +138,28 @@ var app = {
 				if (k1 === 0) {
 					sql += "WHERE " + v1.column + " = 'X' ";
 				} else {
-					sql += "AND " + v1.column + " = 'X' ";
+					sql += "OR " + v1.column + " = 'X' ";
 				}
 			});
 
 			sql += "GROUP BY edad";
+			console.log(sql);
 			tx.executeSql(sql, [], app.ent.ages, app.errorCB);
 		}
 
 		var category = app.selection.category;
 		$.each(category, function(k0, v0) {
 			var btns = $("#" + v0.id).children();
+			app.test = btns;
 			if (v0.value) {
-				$(btns[1]).show();
+				$(btns[0]).show();
 			} else {
-				$(btns[1]).hide();
+				$(btns[0]).hide();
 			}
 
 			$("#" + v0.id).on("click", function(e) {
 				var activeLayer = $(this).children();
-				$(activeLayer[1]).fadeToggle("fast", function() {
+				$(activeLayer[0]).fadeToggle("fast", function() {
 					var layer = this;
 					$.each(category, function(k1, v1) {
 						if (v1.id === activeLayer.context.id) {
@@ -166,17 +173,6 @@ var app = {
 				});
 			});
 		});
-	},
-
-	buildSQL: function() {
-		var sql = "SELECT * FROM datos ";
-		$.each(app.selection, function() {
-
-		});
-	},
-
-	pageEvents: function() {
-		var pages = [""];
 	},
 
 	checkConnection: function() {
@@ -369,15 +365,17 @@ var app = {
 			var len = results.rows.length;
 			var html = "";
 
+			$(list).empty();
+
 			for (var i = 0; i < len; i++) {
-				html += '<li><a href="#"><h1 style="white-space: normal;">' + results.rows.item(i).actividad_de_prevencion;
+				html += '<li><a href="#"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
 				html += '</h1><p>' + results.rows.item(i).titulo + '</p></a></li>';
 			}
-
-			$(list).html(html).trigger('create');
+			$(list).append(html);
 			$.mobile.changePage("#activities");
-
 			app.hideLoadingBox();
+
+			$("#activityList").listview("refresh");
 		}
 	},
 

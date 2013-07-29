@@ -16,14 +16,8 @@
     <body>
         <!-- START PAGE HOME -->
         <div data-role="page" id="home">
-            <div data-role="header">
-                <h1>Autocuidate</h1>
-            </div>
             <div data-role="content">
                 <p>POR FAVOR HACER LA INTRO AQUI</p>
-            </div>
-            <div data-role="footer">
-                
             </div>
         </div>
         <!-- END PAGE HOME -->
@@ -31,87 +25,44 @@
         <div data-role="page" id="cat">
             <div data-role="header">
                 <h1>Autocuidate</h1>
+                <a href="#help-step1" class="ui-btn-right" data-icon="grid">Ayuda</a>
             </div>
             <div data-role="content">
                 <ul data-role="listview" data-inset="true">
-                    <li><a href="#">
-                        <img src="img/pregnant.png" alt="" width="80%"/>
-                        <h3>MI EMBARAZO</h3>
+                    <li data-icon="false"><a href="#" id="btn_pregnancy">
+                        <div style="display: none;"></div>
+                        <img src="img/pregnant.png" alt=""/>
+                        <h1>MI EMBARAZO</h1>
                         <p>Por tu salud, <br>por la salud de tu hijo</p></a>
                     </li>
-                    <li><a href="#">
-                        <img src="img/children.png" alt="" width="80%"/>
-                        <h3>MIS HIJOS</h3>
+                    <li data-icon="false"><a href="#" id="btn_mychildren">
+                        <div style="display: none;"></div>
+                        <img src="img/children.png" alt=""/>
+                        <h1>MIS HIJOS</h1>
                         <p>Tus hijos son tu pasión,<br>por eso cuidalos</p></a>
                     </li>
-                    <li><a href="#">
-                        <img src="img/sexlife.png" alt="" width="80%"/>
-                        <h3>MI VIDA SEXUAL Y REPRODUCTIVA</h3>
+                    <li data-icon="false"><a href="#" id="btn_mysexlife">
+                        <div style="display: none;"></div>
+                        <img src="img/sexlife.png" alt="" style="padding-top: 30px;"/>
+                        <h1>MI VIDA SEXUAL Y REPRODUCTIVA</h1>
                         <p>Disfruta tu vida sexual <br>con libertad y responsabilidad</p></a>
                     </li>
-                    <li><a href="#">
-                        <img src="img/mouth.png" alt="" width="80%" style="margin-top: 15px;"/>
-                        <h3>MI BOCA</h3>
+                    <li data-icon="false"><a href="#" id="btn_mymouth">
+                        <div style="display: none;"></div>
+                        <img src="img/mouth.png" alt=""/>
+                        <h1>MI BOCA</h1>
                         <p>Por tu sonrisa cuida <br>tu salud bucal</p></a>
                     </li>
-                    <li><a href="#">
-                        <img src="img/eyes.png" alt="" width="80%"/>
-                        <h3>MIS OJOS</h3>
+                    <li data-icon="false"><a href="#" id="btn_myeyes">
+                        <div style="display: none;"></div>
+                        <img src="img/eyes.png" alt=""/>
+                        <h1>MIS OJOS</h1>
                         <p>¡OJO! Con tus ojos; <br>Cuida tu salud visual</p></a>
                     </li>
-                    <li><a href="#">
-                        <img src="img/help.png" alt="" width="80%"/>
-                        <h3>AYUDA</h3>
-                        <p>¿Necesitas ayuda?</p></a>
-                    </li>
                 </ul>
-                <!-- 
-                <div class="ui-grid-b">
-                    <div class="ui-block-a">
-                        <a href="#" id="btn_pregnancy">
-                            <span>MI EMBARAZO</span>
-                            <div style="display: none"></div>
-                            <img src="img/pregnant.png" alt="" width="100%"/>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#" id="btn_mychildren">
-                            <span>MIS HIJOS</span>
-                            <div style="display: none"></div>
-                            <img src="img/children.png" alt="" width="100%"/>
-                        </a>
-                    </div>
-                    <div class="ui-block-a">
-                        <a href="#" id="btn_mysexlife">
-                            <span>MI VIDA SEXUAL Y REPRODUCTIVA</span>
-                            <div style="display: none"></div>
-                            <img src="img/sexlife.png" alt="" width="100%"/>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#" id="btn_mymouth">
-                            <span>MI BOCA</span>
-                            <div style="display: none"></div>
-                            <img src="img/mouth.png" alt="" width="100%"/>
-                        </a>
-                    </div>
-                    <div class="ui-block-a">
-                        <a href="#" id="btn_myeyes">
-                            <span>MIS OJOS</span>
-                            <div style="display: none"></div>
-                            <img src="img/eyes.png" alt="" width="100%"/>
-                        </a>
-                    </div>
-                    <div class="ui-block-b">
-                        <a href="#my_help">
-                            <span>AYUDA</span>
-                            <img src="img/help.png" alt="" width="100%"/>    
-                        </a>   
-                    </div>
-                </div> -->  
             </div>
-            <div data-role="footer">
-                <a href="#" id="startQuery">Continuar</a>
+            <div data-role="footer" class="ui-bar" data-position="fixed">
+                <a id="startQuery" href="#" data-icon="check" data-theme="b" style="width: 90%;">Continuar</a>
             </div>
         </div>
         <!-- END PAGE CATEGORIAS -->
@@ -122,13 +73,16 @@
             </div>
             <div data-role="content">
                 <fieldset data-role="controlgroup" id="ageList"></fieldset>
-                <a id="ageContinue" href="#" data-role="button" data-icon="check">Aceptar</a>
+            </div>
+            <div data-role="footer" class="ui-bar" data-position="fixed">
+                <a id="ageContinue" href="#" data-icon="check" data-theme="b" style="width: 100%;">Aceptar</a>
             </div>
         </div>
         <!-- END LISTA DE EDADES -->
         <!-- START LIST ACTIVITIES -->
         <div data-role="page" id="activities">
             <div data-role="header">
+                <a href="#cat" class="ui-btn-left" data-icon="back">Atras</a>
                 <h1>Actividad</h1>
             </div>
             <div data-role="content">
@@ -137,7 +91,7 @@
         </div>
         <!-- END LIST ACTIVITIES -->
         <!-- START DETAIL PAGE -->
-        <div data-role="dialog" id="datail">
+        <div data-role="dialog" id="detail">
             <div data-role="header">
                 <h1></h1>
             </div>
