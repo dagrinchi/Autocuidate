@@ -274,7 +274,7 @@ var app = {
 		// navigator.splashscreen.hide();
 		if (app.checkUpdatedData()) {
 			setTimeout(function() {
-				$.mobile.changePage("#cat");
+				$.mobile.changePage("#home");
 			}, 5000);
 
 		} else {
