@@ -394,24 +394,27 @@ var app = {
 				item[k2] = v2;
 				if (k2 === "edad") {
 					item[k2] = v2.split(",");
-            // for(var i=0;i<item[k2].length;i++){
-                if (item[k2][i].search("-") !== -1) {
-                  item[k2][i] = [];
-                  var ran = item[k2][i].split("-");
-                  var lett1 = ran[0].substring(ran[0].length-1,ran[0].length);
-                  console.log("Número de edades encontradas en "+k1+" "+": "+ran[0]+" "+ran[1]);
-                  var val1 = ran[0].match(/\d/g);
-                  val1 = val1.join("");
+          for(var i = 0;i<item[k2].length;i++){
+          var n = item[k2][i].search("-");
+					if (n !== -1) {
+						item[k2] = [];
+						var ran = v2.split("-");
+            var lett1 = ran[0].substring(ran[0].length-1,ran[0].length);
+             console.log("Número de edades encontradas en "+k1+" "+": "+ran[0]+" "+ran[1]);
+						var val1 = ran[0].match(/\d/g);
+						val1 = val1.join("");
 
-                  var val2 = ran[1].match(/\d/g);
-                  val2 = val2.join("");
+						var val2 = ran[1].match(/\d/g);
+						val2 = val2.join("");
 
-                  for (var i = parseInt(val1); i < parseInt(val2); i++) {
-                    item[k2][i].push(i+lett1);
-                  }
-                }
-            // }
-				}
+						for (var i = parseInt(val1); i < parseInt(val2); i++) {
+							item[k2].push(i+lett1);
+						}
+					}
+             
+          }
+				
+        }
 			});
 			app.data1.push(item);
 		});
