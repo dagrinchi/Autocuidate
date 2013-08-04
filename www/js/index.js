@@ -424,20 +424,36 @@ var app = {
 			return result;
 		}
 
+		var sql = "";
 		$.each(app.data1, function(k4, v4) {
-			var sql = "";
+
 			var values = [];
+			var rows = [];
+
 			$.each(v4, function(k5, v5) {
 				if (v5 instanceof Array) {
-					$.each(v5, function(k6, v6) {
-						values.push('"' + v6 + '"');
-						sql += ' INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
+					values.push(v5);
+				} else {
+					values.push('"' + v5 + '"');
+				}
+			});
+			
+			$.each(values, function(k6, v6) {
+				if (v6 instanceof Array) {
+					var val = [];
+					$.each(v6, function(k7, v7) {
+						rows.push(values);
+						val.push(v7);
+					});
+
+					$.each(rows, function(k8, v8) {
+						rows[k8][k6] = '"' + val[k8] + '"';
+						sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + rows[k8].join() + '); \n';
+						//console.log(sql);
+						tx.executeSql(sql);
 					});
 				}
-				
 			});
-			var dbValues = values.join();
-			// tx.executeSql(sql);
 		});
 	},
 
