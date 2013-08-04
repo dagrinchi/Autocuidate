@@ -372,7 +372,7 @@ var app = {
 		});
 		var dbFields = fields.join();
 		tx.executeSql('DROP TABLE IF EXISTS datos');
-		tx.executeSql('CREATE TABLE IF NOT EXISTS datos (' + dbFields + ')');
+		tx.executeSql('CREATE TABLE IF NOT EXISTS datos (id INTEGER PRIMARY KEY AUTOINCREMENT,' + dbFields + ')');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS columnNames (columnName)');
 
 		console.log("populateDB: Insertando registros en la tabla datos!");
