@@ -289,15 +289,15 @@ var app = {
 	startApp: function() {
 		console.log("startApp: Iniciando estructura de la applicación!");
 		// navigator.splashscreen.hide();
-		if (app.checkUpdatedData()) {
-			setTimeout(function() {
-				$.mobile.changePage("#age-gender");
-			}, 1000);
+		//if (app.checkUpdatedData()) {
+		//	setTimeout(function() {
+		//		$.mobile.changePage("#age-gender");
+    //			}, 1000);
 
-		} else {
-			//app.load();
+    //		} else {
+    //app.load();
 			app.localJson();
-		}
+    //		}
 	},
 
 	checkUpdatedData: function() {
@@ -398,7 +398,8 @@ var app = {
 					if (item[k2].length === 1) {
 						item[k2] = [];
 						var ran = v2.split("-");
-						var lett1 = ran[0].substring(ran[0].length-1,ran[0].length)
+            var lett1 = ran[0].substring(ran[0].length-1,ran[0].length);
+             console.log("Número de edades encontradas en "+k1+" "+": "+ran[0]+" "+ran[1]);
 						var val1 = ran[0].match(/\d/g);
 						val1 = val1.join("");
 
@@ -406,7 +407,7 @@ var app = {
 						val2 = val2.join("");
 
 						for (var i = parseInt(val1); i < parseInt(val2); i++) {
-							item[k2].push(i);
+							item[k2].push(i+lett1);
 						}
 					}
 				}
