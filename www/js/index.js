@@ -387,15 +387,40 @@ var app = {
 			tx.executeSql('INSERT INTO columnNames(columnName) VALUES ("' + fields[j] + '")');
 		}
 
+		app["data1"] = [];
 		$.each(app.data, function(k1, v1) {
-			var values = [];
+			var item = {};
 			$.each(v1, function(k2, v2) {
-				values.push('"' + v2 + '"');
+				item[k2] = v2;
+				if (k2 === "edad") {
+					item[k2] = v2.split(",");
+
+					if (item[k2].length === 1) {
+						item[k2] = [];
+						var ran = v2.split("-");
+						var lett1 = ran[0].substring(ran[0].length-1,ran[0].length)
+						var val1 = ran[0].match(/\d/g);
+						val1 = val1.join("");
+
+						var val2 = ran[1].match(/\d/g);
+						val2 = val2.join("");
+
+						for (var i = parseInt(val1); i < parseInt(val2); i++) {
+							item[k2].push(i);
+						}
+					}
+				}
 			});
-			var dbValues = values.join();
-			var sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
-			tx.executeSql(sql);
+			app.data1.push(item);
 		});
+
+			// var values = [];
+			// $.each(v1, function(k2, v2) {
+			// 	values.push('"' + v2 + '"');
+			// });
+			// var dbValues = values.join();
+			// var sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
+			// tx.executeSql(sql);
 	},
 
 	successCB: function() {
