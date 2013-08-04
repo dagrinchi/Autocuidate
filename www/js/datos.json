@@ -12,7 +12,7 @@ app.data = [{
 		"frase_mi_boca": "",
 		"frase_mis_ojos": "",
 		"actividad_de_prevencion": "VACUNA BCG",
-		"edad": "0m,0a",
+		"edad": "0m,0a,4a-10a",
 		"femenino": "SI",
 		"masculino": "SI",
 		"en_condicion_embarazo": "",
