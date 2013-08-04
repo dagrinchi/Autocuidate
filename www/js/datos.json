@@ -70,7 +70,7 @@ app.data = [{
 		"frase_mi_boca": "",
 		"frase_mis_ojos": "",
 		"actividad_de_prevencion": "VACUNA DPT REFUERZOS",
-		"edad": "18m,5a",
+		"edad": "18m",
 		"femenino": "SI",
 		"masculino": "SI",
 		"en_condicion_embarazo": "",

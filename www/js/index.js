@@ -393,36 +393,52 @@ var app = {
 			$.each(v1, function(k2, v2) {
 				item[k2] = v2;
 				if (k2 === "edad") {
-					item[k2] = v2.split(",");
-            // for(var i=0;i<item[k2].length;i++){
-                if (item[k2][i].search("-") !== -1) {
-                  item[k2][i] = [];
-                  var ran = item[k2][i].split("-");
-                  var lett1 = ran[0].substring(ran[0].length-1,ran[0].length);
-                  console.log("Número de edades encontradas en "+k1+" "+": "+ran[0]+" "+ran[1]);
-                  var val1 = ran[0].match(/\d/g);
-                  val1 = val1.join("");
-
-                  var val2 = ran[1].match(/\d/g);
-                  val2 = val2.join("");
-
-                  for (var i = parseInt(val1); i < parseInt(val2); i++) {
-                    item[k2][i].push(i+lett1);
-                  }
-                }
-            // }
+					if (item[k2].search(",") !== -1) {
+						item[k2] = v2.split(",");
+						$.each(item[k2], function(k3, v3) {
+							if (v3.search("-") !== -1) {
+								item[k2][k3] = create(v3);
+							}
+						});
+					} else if (item[k2].search("-") !== -1) {
+						item[k2] = create(item[k2]);
+					} else {
+						item[k2] = v2;
+					}
 				}
 			});
 			app.data1.push(item);
 		});
 
-			// var values = [];
-			// $.each(v1, function(k2, v2) {
-			// 	values.push('"' + v2 + '"');
-			// });
-			// var dbValues = values.join();
-			// var sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
+		function create(element) {
+			var result = [];
+			var ran = element.split("-");
+			var lett1 = ran[0].substring(ran[0].length - 1, ran[0].length);
+			var val1 = ran[0].match(/\d/g);
+			val1 = val1.join("");
+			var val2 = ran[1].match(/\d/g);
+			val2 = val2.join("");
+			for (var i = parseInt(val1); i <= parseInt(val2); i++) {
+				result.push(i + lett1);
+			}
+			return result;
+		}
+
+		$.each(app.data1, function(k4, v4) {
+			var sql = "";
+			var values = [];
+			$.each(v4, function(k5, v5) {
+				if (v5 instanceof Array) {
+					$.each(v5, function(k6, v6) {
+						values.push('"' + v6 + '"');
+						sql += ' INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
+					});
+				}
+				
+			});
+			var dbValues = values.join();
 			// tx.executeSql(sql);
+		});
 	},
 
 	successCB: function() {
