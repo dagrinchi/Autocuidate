@@ -40,52 +40,52 @@ var app = {
 		}],
 		clasif: {
 			femenino: {
-				id : "femenino",
-				value : ""
+				id: "femenino",
+				value: ""
 			},
 			masculino: {
-				id : "masculino",
-				value : ""
+				id: "masculino",
+				value: ""
 			},
 			en_condicion_embarazo: {
-				id : "en_condicion_embarazo",
-				value : ""
+				id: "en_condicion_embarazo",
+				value: ""
 			},
 			sin_condicion_embarazo: {
-				id : "sin_condicion_embarazo",
-				value : ""
+				id: "sin_condicion_embarazo",
+				value: ""
 			},
 			no_aplica_condicion_de_embarazo: {
-				id : "no_aplica_condicion_de_embarazo",
-				value : ""
+				id: "no_aplica_condicion_de_embarazo",
+				value: ""
 			},
 			nins_10_anos: {
-				id : "nins_10_anos",
-				value : ""
+				id: "nins_10_anos",
+				value: ""
 			},
 			mujer_joven_10_a_29_anios: {
-				id : "joven_10_a_29_anios",
-				value : ""
+				id: "joven_10_a_29_anios",
+				value: ""
 			},
 			hombre_joven_10_a_29_anios: {
-				id : "joven_10_a_29_anios",
-				value : ""
+				id: "joven_10_a_29_anios",
+				value: ""
 			},
 			hef_29_a_44_anios: {
-				id : "29_a_44_anios",
-				value : ""
+				id: "29_a_44_anios",
+				value: ""
 			},
 			mef_29_44_anios: {
-				id : "29_a_44_anios",
-				value : ""
+				id: "29_a_44_anios",
+				value: ""
 			},
 			hombre_adulto_45_anios: {
-				id : "adulto_45_anios",
-				value : ""
+				id: "adulto_45_anios",
+				value: ""
 			},
 			mujer_adulta_45_anios: {
-				id : "adulto_45_anios",
-				value : ""
+				id: "adulto_45_anios",
+				value: ""
 			}
 		}
 	},
@@ -119,6 +119,23 @@ var app = {
 
 	buttonEvents: function() {
 		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
+
+		$("#share").on("click", function(e) {
+			app.showLoadingBox("Descargando!");
+			//var page = $('#detail [data-role="content"]');
+			var page = document.getElementById("detail");
+			var title = $('#detail [data-role="content"] > h1').text();
+			html2canvas(page, {
+				onrendered: function(canvas) {
+					if (device.platform === "iOS") {
+						console.log("Compartiendo en iOS!");
+						var social = window.plugins.social;
+						social.share(title, 'http://www.minsalud.gov.co', canvas);
+						app.hideLoadingBox();
+					}
+				}
+			});
+		});
 
 		$.each(app.selection.clasif, function(k, v) {
 			$("#" + v.id).prop("disabled", true);
@@ -274,8 +291,8 @@ var app = {
 		// navigator.splashscreen.hide();
 		if (app.checkUpdatedData()) {
 			setTimeout(function() {
-				$.mobile.changePage("#cat");
-			}, 5000);
+				$.mobile.changePage("#age-gender");
+			}, 1000);
 
 		} else {
 			app.load();
@@ -380,7 +397,7 @@ var app = {
 		console.log("successCB: Guardando fecha de actualización!");
 		var updated = new Date();
 		window.localStorage.setItem("updated", updated);
-		$.mobile.changePage("#cat");
+		$.mobile.changePage("#age-gender");
 	},
 
 	openDB: function(q) {
@@ -423,7 +440,7 @@ var app = {
 			$(list).empty();
 
 			for (var i = 0; i < len; i++) {
-				html += '<li><a href="#" data-row="'+ results.rows.item(i).RowKey +'"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
+				html += '<li><a href="#" data-row="' + results.rows.item(i).RowKey + '"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
 				html += '</h1><p>' + results.rows.item(i).titulo + '</p></a></li>';
 			}
 			$(list).append(html);

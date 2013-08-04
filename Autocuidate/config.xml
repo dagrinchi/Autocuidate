@@ -110,7 +110,10 @@
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage"/>
     </feature>
-    <!-- Deprecated plugins element. REmove in 3.0 -->
-    <plugins>
-    </plugins>
+    <feature name="Canvas2ImagePlugin">
+        <param name="ios-package" value="Canvas2ImagePlugin" />
+    </feature>
+    <feature name="Social">
+        <param name="ios-package" value="Social" />
+    </feature>
 </widget>
