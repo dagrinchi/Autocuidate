@@ -295,7 +295,8 @@ var app = {
 			}, 1000);
 
 		} else {
-			app.load();
+			//app.load();
+			app.localJson();
 		}
 	},
 
@@ -312,6 +313,12 @@ var app = {
 			console.log("checkUpdatedData: Los datos no están actualizados!");
 			return false;
 		}
+	},
+
+	localJson: function() {
+		var msg = "localJson: Se descargaron los datos completos de open data!";
+		console.log(msg);
+		app.createDB();
 	},
 
 	load: function() {
