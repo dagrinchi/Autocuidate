@@ -295,8 +295,8 @@ var app = {
 			}, 1000);
 
 		} else {
-			//app.load();
-			app.localJson();
+		//app.load();
+		app.localJson();
 		}
 	},
 
