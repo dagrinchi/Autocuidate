@@ -28,30 +28,31 @@
         <div data-role="page" id="age-gender">
             <div data-role="header"></div>
             <div data-role="content">
-                <form>
+                <form id="ageGenderForm">
                     <div data-role="fieldcontain">
                         <label for="ageTxt">Edad:</label>
-                        <input type="number" data-clear-btn="false" name="ageTxt" pattern="[0-9]*" id="number-3" value="">
+                        <input type="number" data-clear-btn="true" name="ageTxt" pattern="[0-9]*" id="ageTxt" value="">
                     </div>
                     <div data-role="fieldcontain">
+                        <label for="ageSel">Años / Meses:</label> 
                         <select name="ageSel" id="ageSel">
-                            <option value="M">MESES</option>
-                            <option value="Y">AÑOS</option>
+                            <option value="a">Años</option>
+                            <option value="m">Meses</option>
                         </select>
                     </div>
-                    <fieldset data-role="controlgroup" data-type="horizontal">
-                        <legend>Sexo:</legend>
-                        <input type="radio" name="genderRad" id="femeninoRad">
-                        <label for="femeninoRad">Femenino</label>
-                        <input type="radio" name="genderRad" id="masculinoRad">
-                        <label for="masculinoRad">Masculino</label>                        
-                    </fieldset>
+                    <div data-role="fieldcontain">
+                        <label for="genderSel">Sexo:</label> 
+                        <select name="genderSel" id="genderSel">
+                            <option value="f">Femenino</option>
+                            <option value="m">Masculino</option>
+                        </select>
+                    </div>
                 </form>
             </div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#cat" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
+                        <li><a href="#" id="filterAgeGender" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
                     </ul>
                 </div>
             </div>
@@ -128,8 +129,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
-                        <li><a href="#agePage" data-icon="back" data-theme="b" data-iconpos="top">Atras</a></li>
-                        <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
+                        <li><a href="#age-gender" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
                     </ul>
                 </div>
             </div>
@@ -138,46 +138,12 @@
         <!-- START DETAIL PAGE -->
         <div data-role="page" id="detail">
             <div data-role="header"></div>
-            <div data-role="content" id="detailContent">
-                <div class="image"></div>
-                <h1></h1>
-                <div data-role="collapsible" data-collapsed="false" data-theme="b">
-                    <h4></h4>
-                    <p style="text-align: justify;"></p>
-                </div>
-                <fieldset data-role="controlgroup" data-type="horizontal" class="gender">
-                    <legend>Género:</legend>
-                    <input type="checkbox" name="femenino" id="femenino">
-                    <label for="femenino">Femenino</label>
-                    <input type="checkbox" name="masculino" id="masculino">
-                    <label for="masculino">Masculino</label>
-                </fieldset>
-                <fieldset data-role="controlgroup" data-type="horizontal" class="pregnancy">
-                    <legend>Condición de embarazo:</legend>
-                    <input type="checkbox" name="en_condicion_embarazo" id="en_condicion_embarazo">
-                    <label for="en_condicion_embarazo">Si</label>
-                    <input type="checkbox" name="sin_condicion_embarazo" id="sin_condicion_embarazo">
-                    <label for="sin_condicion_embarazo">No</label>
-                    <input type="checkbox" name="no_aplica_condicion_de_embarazo" id="no_aplica_condicion_de_embarazo">
-                    <label for="no_aplica_condicion_de_embarazo">No aplica</label>
-                </fieldset>
-                <fieldset data-role="controlgroup" data-type="horizontal" class="ages">
-                    <legend>Rango de edad en años:</legend>
-                    <input type="checkbox" name="nins_10_anos" id="nins_10_anos">
-                    <label for="nins_10_anos">0-10</label>
-                    <input type="checkbox" name="joven_10_a_29_anios" id="joven_10_a_29_anios">
-                    <label for="joven_10_a_29_anios">10-29</label>
-                    <input type="checkbox" name="29_a_44_anios" id="29_a_44_anios">
-                    <label for="29_a_44_anios">29-44</label>
-                    <input type="checkbox" name="adulto_45_anios" id="adulto_45_anios">
-                    <label for="adulto_45_anios">Más de 45</label>
-                </fieldset>
-            </div>
+            <div data-role="content" id="detailContent"></div>
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
                         <li><a href="#activities" data-icon="back" data-theme="b" data-iconpos="top">Atras</a></li>
-                        <li><a href="#cat" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
+                        <li><a href="#age-gender" data-icon="home" data-theme="b" data-iconpos="top">Inicio</a></li>
                         <li><a href="#" id="share" data-icon="star" data-theme="b" data-iconpos="top">Compartir</a></li>
                     </ul>
                 </div>

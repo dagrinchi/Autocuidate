@@ -2,18 +2,18 @@
     -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
-#btn_pregnancy, #btn_mychildren, #btn_mysexlife, #btn_mymouth, #btn_myeyes {
+.btn_pregnancy, .btn_mychildren, .btn_mysexlife, .btn_mymouth, .btn_myeyes {
 	padding-left: 66px !important;
 	padding-top: 5px !important;
 	padding-bottom: 5px !important;
 }
 
-#btn_pregnancy h1, #btn_mychildren h1, #btn_mysexlife h1, #btn_mymouth h1, #btn_myeyes h1 {
+.btn_pregnancy h1, .btn_mychildren h1, .btn_mysexlife h1, .btn_mymouth h1, .btn_myeyes h1 {
 	font-size: 1em;
 	white-space: normal;
 }
 
-#btn_pregnancy > div, #btn_mychildren > div, #btn_mysexlife > div, #btn_mymouth > div, #btn_myeyes > div {
+.btn_pregnancy > div, .btn_mychildren > div, .btn_mysexlife > div, .btn_mymouth > div, .btn_myeyes > div {
 	width: 35px !important;
 	height: 35px;
 	background: url("../img/check.png") no-repeat center center;
@@ -24,7 +24,7 @@
 	display: block;
 }
 
-#btn_pregnancy > img, #btn_mychildren > img, #btn_mysexlife > img, #btn_mymouth > img, #btn_myeyes > img {
+.btn_pregnancy > img, .btn_mychildren > img, .btn_mysexlife > img, .btn_mymouth > img, .btn_myeyes > img {
 	display: block;
 	width: 50px;
 	padding-left: 5px;
@@ -251,3 +251,28 @@ body {
 }
 
 /*========================================== END ANDROID DEVICES ====================================*/
+
+.ui-icon-autoc-pregnancy {
+    background-image: url("../img/pregnant.png") !important;
+    background-size: 18px !important;
+}
+
+.ui-icon-autoc-children {
+    background-image: url("../img/children.png") !important;
+    background-size: 18px !important;
+}
+
+.ui-icon-autoc-sexlife {
+    background-image: url("../img/sexlife.png") !important;
+    background-size: 18px !important;
+}
+
+.ui-icon-autoc-mouth {
+    background-image: url("../img/mouth.png") !important;
+    background-size: 18px !important;
+}
+
+.ui-icon-autoc-eyes {
+    background-image: url("../img/eyes.png") !important;
+    background-size: 18px !important;
+}
