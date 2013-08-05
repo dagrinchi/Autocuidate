@@ -325,8 +325,8 @@ var app = {
 				$.mobile.changePage("#age-gender");
 			}, 1000);
 		} else {
-			//app.load();
-			app.localJson();
+		//app.load();
+		app.localJson();
 		}
 	},
 

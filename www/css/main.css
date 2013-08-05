@@ -123,8 +123,7 @@ div[data-role="header"] {
 body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    /*background-color: #fff;	*/			
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */			
     background-attachment:fixed;
     font-family: 'Open Sans', sans-serif;
     height:100%;
@@ -149,33 +148,28 @@ body {
 }
 
 /* Portrait layout (default) */
-.app {
-    background:url(../img/logo2.png) no-repeat center top; /* 170px x 200px */
-    position:absolute;             /* position in the center of the screen */
+/*.app {
+    background:url(../img/logo2.png) no-repeat center top; 
+    position:absolute;             
     left:49%;
     right: 50%;
     top:50%;
-    height:50px;                   /* text area height */
-    width:250px;                   /* text area width */
-    /*background-position: 50% 50%;*/
-    /*background-size: 100%;*/      /*it works good but, expand the image some bad */
-    /*http://stackoverflow.com/questions/6028737/resize-background-image-in-div-using-css*/            
+    height:50px;                   
+    width:250px;                            
     background-size: contain;
     text-align:center;
-    padding:210px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
-                                   /* offset horizontal: half of text area width */
-}
+    padding:210px 0px 0px 0px;     
+    margin:-115px 0px 0px -112px;                                
+}*/
 
 /* Landscape layout (with min-width) */
-@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+/*@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
         background-position:left center;
-        padding:100px 0px 0px 0px;   /* padding-top + padding-bottom + text area = image height */
-        margin:-98px 0px 0px -98px;  /* offset vertical: half of image height */
-                                     /* offset horizontal: half of image width and text area width */
+        padding:100px 0px 0px 0px;   
+        margin:-98px 0px 0px -98px;                                     
     }
-}
+}*/
 
 .logoEntidad{
 	/*background:url(../img/minsalud.png) no-repeat center top; 
@@ -252,6 +246,127 @@ body {
 
 /*========================================== END ANDROID DEVICES ====================================*/
 
+/*iPad mini*/
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait)
+and (-webkit-min-device-pixel-ratio: 1)  {
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position:absolute;            
+        left:49%;       
+        right: 50%;     
+        top:50%;            
+        height: 120px;                   
+        width:  600px;                   
+        background-size: contain;
+        text-align: center;
+        padding: 545px 0px 0px 0px;     
+        margin: -259px 0px 0px -290px;  
+    }
+}
+
+/* ipad portrait 1 2 3 */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) 
+and (-webkit-min-device-pixel-ratio: 1) {
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position:absolute;            
+        left:49%;       
+        right: 50%;     
+        top:50%;            
+        height: 120px;                   
+        width:  600px;                   
+        background-size: contain;
+        text-align: center;
+        padding: 545px 0px 0px 0px;     
+        margin: -259px 0px 0px -290px;  
+    }
+}
+
+/*iPad Retina*/
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position: absolute;
+        left: 49%;
+        right: 50%;
+        top: 50%;
+        height: 120px;
+        width: 695px;
+        background-size: contain;
+        text-align: center;
+        padding: 633px 0px 0px 0px;
+        margin: -259px 0px 0px -337px; 
+    }
+} 
+
+/*iPhone 5*/
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : portrait) {
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position: absolute;
+        left: 49%;
+        right: 50%;
+        top: 50%;
+        height: 100px;
+        width: 308px;
+        background-size: contain;
+        text-align: center;
+        padding: 310px 0px 0px 0px;
+        margin: -166px 0px 0px -151px;
+    }
+}
+
+/*iPhone 2G/3G/3GS Resolution*/
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) 
+and (orientation : portrait) {
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position: absolute;
+        left: 49%;
+        right: 50%;
+        top: 50%;
+        height: 100px;
+        width: 308px;
+        background-size: contain;
+        text-align: center;
+        padding: 310px 0px 0px 0px;
+        margin: -166px 0px 0px -151px;
+    }
+}
+
+/*iPhone 4/4s*/
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) 
+and (orientation : portrait) {
+    .app {
+        background:url(../img/logo2.png) no-repeat center top; 
+        position: absolute;
+        left: 49%;
+        right: 50%;
+        top: 50%;
+        height: 100px;
+        width: 308px;
+        background-size: contain;
+        text-align: center;
+        padding: 310px 0px 0px 0px;
+        margin: -166px 0px 0px -151px;
+    }
+}
+
 .ui-icon-autoc-pregnancy {
     background-image: url("../img/pregnant.png") !important;
     background-size: 18px !important;
@@ -276,3 +391,4 @@ body {
     background-image: url("../img/eyes.png") !important;
     background-size: 18px !important;
 }
+
