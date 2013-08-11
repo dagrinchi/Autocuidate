@@ -189,8 +189,8 @@ var app = {
 
 		$("#share").on("click", function(e) {
 			app.showLoadingBox("Descargando!");
-			var page = $('#detail [data-role="content"]');
-			//var page = document.getElementById("detail");
+			//var page = $('#detail [data-role="content"]');
+			var page = document.getElementById("detailContent");
 			var title = $('#detail [data-role="content"] > h1').text();
 			html2canvas(page, {
 				onrendered: function(canvas) {
