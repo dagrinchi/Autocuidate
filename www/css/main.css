@@ -38,6 +38,12 @@ div[data-role="header"] {
 	border: none;
 }
 
+.aplica {
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
 #detailContent > h1 {
 	font-size: 1.2em;
 	padding: 0;
@@ -67,6 +73,12 @@ div[data-role="header"] {
 	background-size: 20px;
 }
 
+.gender a, .pregnancy a, .ages a {
+    background-image: none !important;
+    border-radius: 0 !important;
+    text-align: left !important;
+}
+
 .image {
 	width: 100%;
 	height: 90px;
@@ -94,12 +106,12 @@ div[data-role="header"] {
 	overflow: hidden;
 }
 .pb div {
-	background-color: #1a82f7;
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#0099FF), to(#1a82f7)); 
-	background: -webkit-linear-gradient(top, #0099FF, #1a82f7); 
-	background: -moz-linear-gradient(top, #0099FF, #1a82f7); 
-	background: -ms-linear-gradient(top, #0099FF, #1a82f7); 
-	background: -o-linear-gradient(top, #0099FF, #1a82f7);
+	background-color: #ff3333;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff6666), to(#ff3333)); 
+	background: -webkit-linear-gradient(top, #ff6666, #ff3333); 
+	background: -moz-linear-gradient(top, #ff6666, #ff3333); 
+	background: -ms-linear-gradient(top, #ff6666, #ff3333); 
+	background: -o-linear-gradient(top, #ff6666, #ff3333);
 }
 
 #home{

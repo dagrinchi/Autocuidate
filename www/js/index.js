@@ -15,26 +15,41 @@ var app = {
 		gender: "",
 		//edad: [],
 		category: [{
+			title: "MI EMBARAZO",
+			quote: "Por tu salud, <br>por la salud de tu hijo",
+			img: "pregnant.png",
 			id: "btn_pregnancy",
 			column: "mi_embarazo",
 			quoteColumn: "frase_mi_embarazo",
 			value: false
 		}, {
+			title: "MIS HIJOS",
+			quote: "Tus hijos son tu pasión,<br>por eso cuidalos",
+			img: "children.png",
 			id: "btn_mychildren",
 			column: "mis_hijos",
 			quoteColumn: "frasemis_hijos",
 			value: false
 		}, {
+			title: "MI VIDA SEXUAL Y REPRODUCTIVA",
+			quote: "Disfruta tu vida sexual <br>con libertad y responsabilidad",
+			img: "sexlife.png",
 			id: "btn_mysexlife",
 			column: "mi_vida_sexual_y_reproductiva",
 			quoteColumn: "frase_mi_vida_sexual_y_reproductiva",
 			value: false
 		}, {
+			title: "MI BOCA",
+			quote: "Por tu sonrisa cuida <br>tu salud bucal",
+			img: "mouth.png",
 			id: "btn_mymouth",
 			column: "mi_boca",
 			quoteColumn: "frase_mi_boca",
 			value: false
 		}, {
+			title: "MIS OJOS",
+			quote: "¡OJO! Con tus ojos; <br>Cuida tu salud visual",
+			img: "eyes.png",
 			id: "btn_myeyes",
 			column: "mis_ojos",
 			quoteColumn: "frase_mis_ojos",
@@ -102,8 +117,10 @@ var app = {
 		//window.localStorage.removeItem("updated");
 		app.buttonEvents();
 		app.pageEvents();
-		$("#ageGenderForm").submit(function(e) {
+		$("#ageGenderForm").on("submit", function(e) {
+			console.log("preventDefault form!");
 			e.preventDefault();
+			return false;
 		});
 		console.log("onDeviceReady: Dispositivo listo!");
 
@@ -136,9 +153,24 @@ var app = {
 				app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
 				app.selection.gender = dataObj[2]["value"];
 
-				app.openDB(queryActivities2);
+				app.openDB(queryCategories);
 			}
 		});
+
+		function queryCategories(tx) {
+			var sql = "SELECT * FROM datos";
+			sql += " WHERE edad = '" + app.selection.age + "'";
+			switch (app.selection.gender) {
+				case "m":
+					sql += " AND masculino = 'SI'";
+					break;
+				case "f":
+					sql += " AND femenino = 'SI'";
+					break;
+			}
+			console.log(sql);
+			tx.executeSql(sql, [], app.ent.categories, app.errorCB);
+		}
 
 		function queryActivities2(tx) {
 			var sql = "SELECT * FROM datos";
@@ -157,8 +189,8 @@ var app = {
 
 		$("#share").on("click", function(e) {
 			app.showLoadingBox("Descargando!");
-			//var page = $('#detail [data-role="content"]');
-			var page = document.getElementById("detail");
+			var page = $('#detail [data-role="content"]');
+			//var page = document.getElementById("detail");
 			var title = $('#detail [data-role="content"] > h1').text();
 			html2canvas(page, {
 				onrendered: function(canvas) {
@@ -325,8 +357,8 @@ var app = {
 				$.mobile.changePage("#age-gender");
 			}, 1000);
 		} else {
-		//app.load();
-		app.localJson();
+			app.load();
+			//app.localJson();
 		}
 	},
 
@@ -423,8 +455,8 @@ var app = {
 			$.each(v1, function(k2, v2) {
 				item[k2] = v2;
 				if (k2 === "edad") {
-					if (item[k2].search(",") !== -1) {
-						item[k2] = v2.split(",");
+					if (item[k2].search(";") !== -1) {
+						item[k2] = v2.split(";");
 						$.each(item[k2], function(k3, v3) {
 							if (v3.search("-") !== -1) {
 								item[k2][k3] = create(v3);
@@ -526,6 +558,85 @@ var app = {
 			app.hideLoadingBox();
 			app.registerInputs(list);
 		},
+		categories: function(tx, results) {
+			console.log("ent.categories: Valida si hay resultados!");
+			var len = results.rows.length;
+			if (len === 0) {
+				navigator.notification.alert('No se encuentran resultados con tu búsqueda!', function() {
+					app.hideLoadingBox();
+				}, 'Atención', 'Aceptar');
+				return false;
+			}
+
+			$.each(app.selection.category, function(k, v) {
+				v.value = false;
+			});
+
+			var list = "#catList";
+			var html = "";
+
+			$(list).empty();
+
+			for (var i = 0; i < len; i++) {
+				if (results.rows.item(i).mi_embarazo === "X") {
+					app.selection.category[0].value = true;
+				}
+				if (results.rows.item(i).mis_hijos === "X") {
+					app.selection.category[1].value = true;
+				}
+				if (results.rows.item(i).mi_vida_sexual_y_reproductiva === "X") {
+					app.selection.category[2].value = true;
+				}
+				if (results.rows.item(i).mi_boca === "X") {
+					app.selection.category[3].value = true;
+				}
+				if (results.rows.item(i).mis_ojos === "X") {
+					app.selection.category[4].value = true;
+				}
+			}
+
+			$.each(app.selection.category, function(k, v) {
+				if (v.value) {
+					html += '<li>';
+					html += '<a href="#" data-column="' + v.column + '" class="' + v.id + '">';
+					html += '<img src="img/' + v.img + '" alt=""/>';
+					html += '<h1>' + v.title + '</h1>';
+					html += '<p>' + v.quote + '</p></a>';
+					html += '</li>';
+				}
+			});
+
+			$(list).append(html);
+			$.mobile.changePage("#categories");
+			app.hideLoadingBox();
+
+			$(list).listview("refresh");
+
+			var column;
+			$(list + " a").on("click", function() {
+				console.log("eventLinks: Evento del link!");
+				column = $(this).data("column");
+				app.openDB(queryActivities2);
+			});
+
+			function queryActivities2(tx) {
+				var sql = "SELECT * FROM datos";
+				sql += " WHERE edad = '" + app.selection.age + "'";
+				switch (app.selection.gender) {
+					case "m":
+						sql += " AND masculino = 'SI'";
+						break;
+					case "f":
+						sql += " AND femenino = 'SI'";
+						break;
+				}
+				sql += " AND " + column + " = 'X'";
+				console.log(sql);
+				tx.executeSql(sql, [], app.ent.activities2, app.errorCB);
+			}
+
+		},
+
 		activities: function(tx, results) {
 			console.log("ent.activities: Construyendo listado actividades!");
 
@@ -546,6 +657,7 @@ var app = {
 			$(list).listview("refresh");
 			app.registerLinks(list);
 		},
+
 		activities2: function(tx, results) {
 			console.log("ent.activities: Valida si hay resultados!");
 			var len = results.rows.length;
@@ -565,7 +677,8 @@ var app = {
 
 			for (var i = 0; i < len; i++) {
 				html += '<li><a style="padding-bottom: 0.4em;" href="#" data-row="' + results.rows.item(i).id + '"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
-				html += '</h1><p>' + results.rows.item(i).titulo + '</p>\n';
+				html += '</h1>\n';
+				//html += '</h1><p>' + results.rows.item(i).titulo + '</p>\n';
 				html += '<div data-role="controlgroup" data-type="horizontal" style="margin-left: 0.7em; margin-bottom: 0.4em; margin-top: 0.4em;">\n';
 				if (results.rows.item(i).mi_embarazo === "X") {
 					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-pregnancy" data-iconpos="notext"></a>\n';
@@ -594,6 +707,7 @@ var app = {
 		},
 		detail: function(tx, results) {
 			var item = results.rows.item(0);
+
 			var html = "";
 
 			html += '<h1>' + item.titulo + '</h1>\n';
@@ -602,100 +716,66 @@ var app = {
 			html += '<p style="text-align: justify;">' + item.descripcion_de_la_actividad + '</p>\n';
 			html += '</div>\n';
 
-			html += '<fieldset data-role="controlgroup" data-type="horizontal" class="gender">\n';
-            html += '<legend>Género:</legend>\n';
-            html += '<input type="checkbox" name="femenino" id="femenino" disabled="true">\n';
-            html += '<label for="femenino">Femenino</label>\n';
-            html += '<input type="checkbox" name="masculino" id="masculino" disabled="true">\n';
-            html += '<label for="masculino">Masculino</label>\n';
-            html += '</fieldset>\n';
+			html += '<div data-role="collapsible" data-collapsed="false" data-theme="b" class="aplica">\n';
+			html += '<h4>Aplica para:</h4>\n';
 
-            html += '<fieldset data-role="controlgroup" data-type="horizontal" class="pregnancy">\n';
-			html += '<legend>Condición de embarazo:</legend>\n';
-			html += '<input type="checkbox" name="en_condicion_embarazo" id="en_condicion_embarazo" disabled="true">\n';
-            html += '<label for="en_condicion_embarazo">Si</label>\n';
-            html += '<input type="checkbox" name="sin_condicion_embarazo" id="sin_condicion_embarazo" disabled="true">\n';
-            html += '<label for="sin_condicion_embarazo">No</label>\n';
-            html += '<input type="checkbox" name="no_aplica_condicion_de_embarazo" id="no_aplica_condicion_de_embarazo" disabled="true">\n';
-            html += '<label for="no_aplica_condicion_de_embarazo">No aplica</label>\n';
-            html += '</fieldset>\n';
+			html += '<div data-role="controlgroup" data-type="vertical" class="gender">\n';
+			html += '<p>Sexo:</p>\n';
+			if (item['femenino'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Femenino</a>\n';
+			}
+			if (item['masculino'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Masculino</a>\n';
+			}
+			html += '</div>\n';
 
-            html += '<fieldset data-role="controlgroup" data-type="horizontal" class="ages">\n';
-			html += '<legend>Rango de edad en años:</legend>\n';
-            html += '<input type="checkbox" name="nins_10_anos" id="nins_10_anos" disabled="true">\n';
-            html += '<label for="nins_10_anos">0-10</label>\n';
-            html += '<input type="checkbox" name="joven_10_a_29_anios" id="joven_10_a_29_anios" disabled="true">\n';
-            html += '<label for="joven_10_a_29_anios">10-29</label>\n';
-            html += '<input type="checkbox" name="29_a_44_anios" id="29_a_44_anios" disabled="true">\n';
-            html += '<label for="29_a_44_anios">29-44</label>\n';
-            html += '<input type="checkbox" name="adulto_45_anios" id="adulto_45_anios" disabled="true">\n';
-            html += '<label for="adulto_45_anios">Más de 45</label>\n';
-            html += '</fieldset>\n';
+			html += '<div data-role="controlgroup" data-type="vertical" class="pregnancy">\n';
+			html += '<p>Condición de embarazo:</p>\n';
 
-   //          html += '<ul data-role="listview">\n';
-   //          console.log(">>>>> 2");
-			// if (item.mi_embarazo === "X") {
-			// 	console.log(">>>>> 3");
-			// 	html += '<li data-icon="false"><a href="#" class="btn_pregnancy">\n';
-			// 	html += '<div style="display: none;"></div>\n';
-			// 	html += '<img src="img/pregnant.png" alt=""/>\n';
-			// 	html += '<h1>MI EMBARAZO</h1>\n';
-			// 	html += '<p>Por tu salud, <br>por la salud de tu hijo</p></a>\n';
-			// 	html += '</li>\n';
-			// }
-			// if (item.mis_hijos === "X") {
-			// 	console.log(">>>>> 4");
-			// 	html += '<li data-icon="false"><a href="#" class="btn_mychildren">\n';
-			// 	html += '<div style="display: none;"></div>\n';
-			// 	html += '<img src="img/children.png" alt=""/>\n';
-			// 	html += '<h1>MIS HIJOS</h1>\n';
-			// 	html += '<p>Tus hijos son tu pasión,<br>por eso cuidalos</p></a>\n';
-			// 	html += '</li>\n';
-			// }
-			// if (item.mi_vida_sexual_y_reproductiva === "X") {
-			// 	console.log(">>>>> 5");
-			// 	html += '<li data-icon="false"><a href="#" class="btn_mysexlife">\n';
-			// 	html += '<div style="display: none;"></div>\n';
-			// 	html += '<img src="img/sexlife.png" alt="" style="padding-top: 30px;"/>\n';
-			// 	html += '<h1>MI VIDA SEXUAL Y REPRODUCTIVA</h1>\n';
-			// 	html += '<p>Disfruta tu vida sexual <br>con libertad y responsabilidad</p></a>\n';
-			// 	html += '</li>\n';
-			// }
-			// if (item.mi_boca === "X") {
-			// 	console.log(">>>>> 6");
-			// 	html += '<li data-icon="false"><a href="#" class="btn_mymouth">\n';
-			// 	html += '<div style="display: none;"></div>\n';
-			// 	html += '<img src="img/mouth.png" alt=""/>\n';
-			// 	html += '<h1>MI BOCA</h1>\n';
-			// 	html += '<p>Por tu sonrisa cuida <br>tu salud bucal</p></a>\n';
-			// 	html += '</li>\n';
-			// }
-			// if (item.mis_ojos === "X") {
-			// 	console.log(">>>>> 7");
-			// 	html += '<li data-icon="false"><a href="#" class="btn_myeyes">\n';
-			// 	html += '<div style="display: none;"></div>\n';
-			// 	html += '<img src="img/eyes.png" alt=""/>\n';
-			// 	html += '<h1>MIS OJOS</h1>\n';
-			// 	html += '<p>¡OJO! Con tus ojos; <br>Cuida tu salud visual</p></a>\n';
-			// 	html += '</li>\n';
-			// }
-			// console.log(">>>>> 8");
-			// html += '</ul>\n';
+			if (item['en_condicion_embarazo'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Si</a>\n';
+			}
+			if (item['sin_condicion_embarazo'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">No</a>\n';
+			}
+			if (item['no_aplica_condicion_de_embarazo'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">No aplica</a>\n';
+			}
+			html += '</div>\n';
 
-            $("#detailContent").html(html);
-			$.each(app.selection.clasif, function(k1, v1) {
-				v1.value = item[k1];
-				var $btn = $("#" + v1.id);
-				if (v1.value === "SI") {
-					$btn.prop("checked", true);
-				}
-				$btn.parent().removeClass("ui-disabled");
-			});
+			html += '<div data-role="controlgroup" data-type="vertical" class="ages">\n';
+			html += '<p>Rango de edad:</p>\n';
+
+			if (item['nins_10_anos'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">0-10 Años</a>\n';
+			}
+			if (item['mujer_joven_10_a_29_anios'] === "SI" || item['hombre_joven_10_a_29_anios'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">10-29 Años</a>\n';
+			}
+			if (item['mef_29_44_anios'] === "SI" || item['hef_29_a_44_anios'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">29-44 Años</a>\n';
+			}
+			if (item['hombre_adulto_45_anios'] === "SI" || item['mujer_adulta_45_anios'] === "SI") {
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Más de 45 Años</a>\n';
+			}
+			html += '</div>\n';
+
+			html += '</div>\n';
+
+			$("#detailContent").html(html);
+			// $.each(app.selection.clasif, function(k1, v1) {
+			// 	v1.value = item[k1];
+			// 	var $btn = $("#" + v1.id);
+			// 	if (v1.value === "SI") {
+			// 		$btn.prop("checked", true);
+			// 	}
+			// 	$btn.parent().removeClass("ui-disabled");
+			// });
 
 			$("#detailContent").trigger("create");
 			setTimeout(function() {
 				$("#detailContent .ui-disabled").removeClass("ui-disabled");
-			},400);
+			}, 400);
 			$.mobile.changePage("#detail");
 			app.hideLoadingBox();
 		}
