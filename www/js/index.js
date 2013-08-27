@@ -170,6 +170,10 @@ var app = {
 				navigator.notification.alert('Debe digitar la edad!', function() {
 					return false;
 				}, 'Atención', 'Aceptar');
+			} else if (dataObj[0]["value"] >= 24 && dataObj[1]["value"] === "m") {
+				navigator.notification.alert('Para edades superiores a 23 meses se debe realizar la consulta en años!', function() {
+					return false;
+				}, 'Atención', 'Aceptar');
 			} else {
 				app.selection.edad = dataObj[0]["value"];
 				app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
