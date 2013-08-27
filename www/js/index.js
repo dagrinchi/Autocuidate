@@ -14,6 +14,7 @@ var app = {
 		edad: "",
 		age: "",
 		gender: "",
+		pregnant: "",
 		//edad: [],
 		category: [{
 			title: "MI EMBARAZO",
@@ -173,7 +174,7 @@ var app = {
 				app.selection.edad = dataObj[0]["value"];
 				app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
 				app.selection.gender = dataObj[2]["value"];
-
+				app.selection.pregnant = dataObj[3]["value"];
 				app.openDB(queryCategories);
 			}
 		});
@@ -338,50 +339,46 @@ var app = {
 		sql += " WHERE edad = '" + app.selection.age + "'";
 		switch (app.selection.gender) {
 			case "m":
-				if (app.selection.edad < 10) {
+				if (app.selection.edad <= 10) {
 					sql += " AND nins_10_anos = 'SI'";
-				} else if (app.selection.edad > 10 && app.selection.edad < 29) {
+					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+				} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
 					sql += " AND hombre_joven_10_29_anos = 'SI'";
 					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
-					sql += " OR en_condicion_embarazo = ''";
-					sql += " OR sin_condicion_embarazo = '')";
-				} else if (app.selection.edad > 29 && app.selection.edad < 44) {
+					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+				} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
 					sql += " AND hef_29_44_anos = 'SI'";
 					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
-					sql += " OR en_condicion_embarazo = ''";
-					sql += " OR sin_condicion_embarazo = '')";
+					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
 				} else if (app.selection.edad > 44) {
 					sql += " AND hombre_adulto_45_anos = 'SI'";
 					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
-					sql += " OR en_condicion_embarazo = ''";
-					sql += " OR sin_condicion_embarazo = '')";
+					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
 				}
 				// sql += " AND mi_embarazo = ''";
 				break;
 			case "f":
-				if (app.selection.edad < 10) {
+				if (app.selection.edad <= 10) {
 					sql += " AND nins_10_anos = 'SI'";
-				} else if (app.selection.edad > 10 && app.selection.edad < 29) {
+					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+				} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
 					sql += " AND mujer_joven_10_29_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
-					sql += " AND (en_condicion_embarazo = 'SI'";
-					sql += " OR sin_condicion_embarazo = 'SI'";
-					sql += " OR no_aplica_condicion_de_embarazo = '')";
-				} else if (app.selection.edad > 29 && app.selection.edad < 44) {
+				} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
 					sql += " AND mef_29_44_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
-					sql += " AND (en_condicion_embarazo = 'SI'";
-					sql += " OR sin_condicion_embarazo = 'SI'";
-					sql += " OR no_aplica_condicion_de_embarazo = '')";
 				} else if (app.selection.edad > 44) {
 					sql += " AND mujer_adulta_45_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
-					sql += " AND (en_condicion_embarazo = 'SI'";
-					sql += " OR sin_condicion_embarazo = 'SI'";
-					sql += " OR no_aplica_condicion_de_embarazo = '')";
+				}
+
+				switch (app.selection.pregnant) {
+					case "si":
+					sql += " AND en_condicion_embarazo = 'SI'";
+					break;
+					case "no":
+					sql += " AND sin_condicion_embarazo = 'SI'";
+					break;
 				}
 				break;
 		}
