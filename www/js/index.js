@@ -364,21 +364,36 @@ var app = {
 				} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
 					sql += " AND mujer_joven_10_29_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
+					switch (app.selection.pregnant) {
+						case "si":
+							sql += " AND en_condicion_embarazo = 'SI'";
+							break;
+						case "no":
+							sql += " AND sin_condicion_embarazo = 'SI'";
+							break;
+					}
 				} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
 					sql += " AND mef_29_44_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
+					switch (app.selection.pregnant) {
+						case "si":
+							sql += " AND en_condicion_embarazo = 'SI'";
+							break;
+						case "no":
+							sql += " AND sin_condicion_embarazo = 'SI'";
+							break;
+					}
 				} else if (app.selection.edad > 44) {
 					sql += " AND mujer_adulta_45_anos = 'SI'";
 					sql += " AND (masculino = '' OR femenino = 'SI')";
-				}
-
-				switch (app.selection.pregnant) {
-					case "si":
-					sql += " AND en_condicion_embarazo = 'SI'";
-					break;
-					case "no":
-					sql += " AND sin_condicion_embarazo = 'SI'";
-					break;
+					switch (app.selection.pregnant) {
+						case "si":
+							sql += " AND en_condicion_embarazo = 'SI'";
+							break;
+						case "no":
+							sql += " AND sin_condicion_embarazo = 'SI'";
+							break;
+					}
 				}
 				break;
 		}
