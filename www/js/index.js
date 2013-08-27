@@ -437,7 +437,7 @@ var app = {
 	checkUpdatedData: function() {
 		console.log("checkUpdatedData: Comprobando si los datos están actualizados!");
 		var s = new Date();
-		s.setMonth(s.getMonth() - 6);
+		s.setMonth(s.getMonth() - 3);
 		var updated = window.localStorage.getItem("updated");
 		var u = new Date(updated);
 		if (updated && u > s) {
