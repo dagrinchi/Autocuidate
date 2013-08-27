@@ -614,7 +614,6 @@ var app = {
 					$.each(rows, function(k8, v8) {
 						rows[k8][k6] = '"' + val[k8] + '"';
 						sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + rows[k8].join() + '); \n';
-						console.log(sql);
 						tx.executeSql(sql);
 					});
 				}
