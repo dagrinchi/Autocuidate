@@ -2,7 +2,7 @@ var app = {
 
 	name: "Autocuidate",
 
-	authors: "Alejandro Zarate: azarate@cool4code.com, Marcos Aguilera: maguilera@cool4code.com, Paola Vanegas: pvanegas@cool4code.com, David Alméciga: walmeciga@cool4code.com",
+	authors: "Alejandro Zarate: azarate@cool4code.com, Marcos Aguilera: maguilera@cool4code.com, Paola Vanegas: filterAgeGender, David Alméciga: walmeciga@cool4code.com",
 
 	version: 1.0,
 
@@ -11,6 +11,7 @@ var app = {
 	data: [],
 
 	selection: {
+		edad: "",
 		age: "",
 		gender: "",
 		//edad: [],
@@ -21,7 +22,8 @@ var app = {
 			id: "btn_pregnancy",
 			column: "mi_embarazo",
 			quoteColumn: "frase_mi_embarazo",
-			value: false
+			value: false,
+			sel: false
 		}, {
 			title: "MIS HIJOS",
 			quote: "Tus hijos son tu pasión,<br>por eso cuidalos",
@@ -29,7 +31,8 @@ var app = {
 			id: "btn_mychildren",
 			column: "mis_hijos",
 			quoteColumn: "frasemis_hijos",
-			value: false
+			value: false,
+			sel: false
 		}, {
 			title: "MI VIDA SEXUAL Y REPRODUCTIVA",
 			quote: "Disfruta tu vida sexual <br>con libertad y responsabilidad",
@@ -37,7 +40,8 @@ var app = {
 			id: "btn_mysexlife",
 			column: "mi_vida_sexual_y_reproductiva",
 			quoteColumn: "frase_mi_vida_sexual_y_reproductiva",
-			value: false
+			value: false,
+			sel: false
 		}, {
 			title: "MI BOCA",
 			quote: "Por tu sonrisa cuida <br>tu salud bucal",
@@ -45,7 +49,8 @@ var app = {
 			id: "btn_mymouth",
 			column: "mi_boca",
 			quoteColumn: "frase_mi_boca",
-			value: false
+			value: false,
+			sel: false
 		}, {
 			title: "MIS OJOS",
 			quote: "¡OJO! Con tus ojos; <br>Cuida tu salud visual",
@@ -53,7 +58,8 @@ var app = {
 			id: "btn_myeyes",
 			column: "mis_ojos",
 			quoteColumn: "frase_mis_ojos",
-			value: false
+			value: false,
+			sel: false
 		}],
 		clasif: {
 			femenino: {
@@ -151,6 +157,7 @@ var app = {
 					return false;
 				}, 'Atención', 'Aceptar');
 			} else {
+				app.selection.edad = dataObj[0]["value"];
 				app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
 				app.selection.gender = dataObj[2]["value"];
 
@@ -159,18 +166,7 @@ var app = {
 		});
 
 		function queryCategories(tx) {
-			var sql = "SELECT * FROM datos";
-			sql += " WHERE edad = '" + app.selection.age + "'";
-			switch (app.selection.gender) {
-				case "m":
-					sql += " AND masculino = 'SI'";
-					break;
-				case "f":
-					sql += " AND femenino = 'SI'";
-					break;
-			}
-			console.log(sql);
-			tx.executeSql(sql, [], app.ent.categories, app.errorCB);
+			tx.executeSql(app.buildSql(), [], app.ent.categories, app.errorCB);
 		}
 
 		function queryActivities2(tx) {
@@ -309,6 +305,69 @@ var app = {
 				});
 			});
 		});
+	},
+
+	buildSql: function(category) {
+		var sql = "SELECT * FROM datos";
+		sql += " WHERE edad = '" + app.selection.age + "'";
+		switch (app.selection.gender) {
+			case "m":
+				if (app.selection.edad < 10) {
+					sql += " AND nins_10_anos = 'SI'";
+				} else if (app.selection.edad > 10 && app.selection.edad < 29) {
+					sql += " AND hombre_joven_10_29_anos = 'SI'";
+					sql += " AND (masculino = 'SI' OR femenino = '')";
+					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
+					sql += " OR en_condicion_embarazo = ''";
+					sql += " OR sin_condicion_embarazo = '')";
+				} else if (app.selection.edad > 29 && app.selection.edad < 44) {
+					sql += " AND hef_29_44_anos = 'SI'";
+					sql += " AND (masculino = 'SI' OR femenino = '')";
+					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
+					sql += " OR en_condicion_embarazo = ''";
+					sql += " OR sin_condicion_embarazo = '')";
+				} else if (app.selection.edad > 44) {
+					sql += " AND hombre_adulto_45_anos = 'SI'";
+					sql += " AND (masculino = 'SI' OR femenino = '')";
+					sql += " AND (no_aplica_condicion_de_embarazo = 'SI'";
+					sql += " OR en_condicion_embarazo = ''";
+					sql += " OR sin_condicion_embarazo = '')";
+				}
+				// sql += " AND mi_embarazo = ''";
+				break;
+			case "f":
+				if (app.selection.edad < 10) {
+					sql += " AND nins_10_anos = 'SI'";
+				} else if (app.selection.edad > 10 && app.selection.edad < 29) {
+					sql += " AND mujer_joven_10_29_anos = 'SI'";
+					sql += " AND (masculino = '' OR femenino = 'SI')";
+					sql += " AND (en_condicion_embarazo = 'SI'";
+					sql += " OR sin_condicion_embarazo = 'SI'";
+					sql += " OR no_aplica_condicion_de_embarazo = '')";
+				} else if (app.selection.edad > 29 && app.selection.edad < 44) {
+					sql += " AND mef_29_44_anos = 'SI'";
+					sql += " AND (masculino = '' OR femenino = 'SI')";
+					sql += " AND (en_condicion_embarazo = 'SI'";
+					sql += " OR sin_condicion_embarazo = 'SI'";
+					sql += " OR no_aplica_condicion_de_embarazo = '')";
+				} else if (app.selection.edad > 44) {
+					sql += " AND mujer_adulta_45_anos = 'SI'";
+					sql += " AND (masculino = '' OR femenino = 'SI')";
+					sql += " AND (en_condicion_embarazo = 'SI'";
+					sql += " OR sin_condicion_embarazo = 'SI'";
+					sql += " OR no_aplica_condicion_de_embarazo = '')";
+				}
+				break;
+		}
+		if (typeof category === "boolean" && category === true) {
+			$.each(app.selection.category, function(k, v) {
+				if (v.sel) {
+					sql += " AND " + v.column + " = 'X'";
+				}
+			});
+		}
+		console.log(sql);
+		return sql;
 	},
 
 	checkConnection: function() {
@@ -616,24 +675,32 @@ var app = {
 			var column;
 			$(list + " a").on("click", function() {
 				console.log("eventLinks: Evento del link!");
+				$.each(app.selection.category, function(k, v) {
+					v.sel = false;
+				});
 				column = $(this).data("column");
+				switch (column) {
+					case "mi_embarazo":
+						app.selection.category[0].sel = true;
+						break;
+					case "mis_hijos":
+						app.selection.category[1].sel = true;
+						break;
+					case "mi_vida_sexual_y_reproductiva":
+						app.selection.category[2].sel = true;
+						break;
+					case "mi_boca":
+						app.selection.category[3].sel = true;
+						break;
+					case "mis_ojos":
+						app.selection.category[4].sel = true;
+						break;
+				}
 				app.openDB(queryActivities2);
 			});
 
 			function queryActivities2(tx) {
-				var sql = "SELECT * FROM datos";
-				sql += " WHERE edad = '" + app.selection.age + "'";
-				switch (app.selection.gender) {
-					case "m":
-						sql += " AND masculino = 'SI'";
-						break;
-					case "f":
-						sql += " AND femenino = 'SI'";
-						break;
-				}
-				sql += " AND " + column + " = 'X'";
-				console.log(sql);
-				tx.executeSql(sql, [], app.ent.activities2, app.errorCB);
+				tx.executeSql(app.buildSql(true), [], app.ent.activities2, app.errorCB);
 			}
 
 		},
@@ -680,23 +747,24 @@ var app = {
 				html += '<li><a style="padding-bottom: 0.4em;" href="#" data-row="' + results.rows.item(i).id + '"><h1 style="white-space: normal; font-size: 1em;">' + results.rows.item(i).actividad_de_prevencion;
 				html += '</h1>\n';
 				//html += '</h1><p>' + results.rows.item(i).titulo + '</p>\n';
-				html += '<div data-role="controlgroup" data-type="horizontal" style="margin-left: 0.7em; margin-bottom: 0.4em; margin-top: 0.4em;">\n';
-				if (results.rows.item(i).mi_embarazo === "X") {
-					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-pregnancy" data-iconpos="notext"></a>\n';
-				}
-				if (results.rows.item(i).mis_hijos === "X") {
-					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-children" data-iconpos="notext"></a>\n';
-				}
-				if (results.rows.item(i).mi_vida_sexual_y_reproductiva === "X") {
-					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-sexlife" data-iconpos="notext"></a>\n';
-				}
-				if (results.rows.item(i).mi_boca === "X") {
-					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-mouth" data-iconpos="notext"></a>\n';
-				}
-				if (results.rows.item(i).mis_ojos === "X") {
-					html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-eyes" data-iconpos="notext"></a>\n';
-				}
-				html += '</div></a></li>';
+				// html += '<div data-role="controlgroup" data-type="horizontal" style="margin-left: 0.7em; margin-bottom: 0.4em; margin-top: 0.4em;">\n';
+				// if (results.rows.item(i).mi_embarazo === "X") {
+				// 	html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-pregnancy" data-iconpos="notext"></a>\n';
+				// }
+				// if (results.rows.item(i).mis_hijos === "X") {
+				// 	html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-children" data-iconpos="notext"></a>\n';
+				// }
+				// if (results.rows.item(i).mi_vida_sexual_y_reproductiva === "X") {
+				// 	html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-sexlife" data-iconpos="notext"></a>\n';
+				// }
+				// if (results.rows.item(i).mi_boca === "X") {
+				// 	html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-mouth" data-iconpos="notext"></a>\n';
+				// }
+				// if (results.rows.item(i).mis_ojos === "X") {
+				// 	html += '<a href="#" data-row="' + results.rows.item(i).id + '" data-role="button" data-mini="true" class="ui-icon-nodisc" data-icon="autoc-eyes" data-iconpos="notext"></a>\n';
+				// }
+				// html += '</div></a></li>';
+				html += '</a></li>';
 			}
 			$(list).html(html).trigger("create");
 			$.mobile.changePage("#activities");
@@ -750,17 +818,22 @@ var app = {
 			if (item['nins_10_anos'] === "SI") {
 				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">0-10 Años</a>\n';
 			}
-			if (item['mujer_joven_10_a_29_anios'] === "SI" || item['hombre_joven_10_a_29_anios'] === "SI") {
+			if (item['mujer_joven_10_29_anos'] === "SI" || item['hombre_joven_10_29_anos'] === "SI") {
 				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">10-29 Años</a>\n';
 			}
-			if (item['mef_29_44_anios'] === "SI" || item['hef_29_a_44_anios'] === "SI") {
+			if (item['mef_29_44_anos'] === "SI" || item['hef_29_44_anos'] === "SI") {
 				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">29-44 Años</a>\n';
 			}
-			if (item['hombre_adulto_45_anios'] === "SI" || item['mujer_adulta_45_anios'] === "SI") {
+			if (item['hombre_adulto_45_anos'] === "SI" || item['mujer_adulta_45_anos'] === "SI") {
 				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Más de 45 Años</a>\n';
 			}
 			html += '</div>\n';
 
+			html += '</div>\n';
+
+			html += '<div data-role="collapsible" data-collapsed="false" data-theme="b" class="moreinformation">\n';
+			html += '<h4>Más información:</h4>\n';
+			html += '<p style="text-align: justify;">' + item['informacionadic'] + '</p>\n';
 			html += '</div>\n';
 
 			$("#detailContent").html(html);
