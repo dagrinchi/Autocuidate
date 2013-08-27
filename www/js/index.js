@@ -115,6 +115,7 @@ var app = {
 
 	onDeviceReady: function() {
 		//window.localStorage.removeItem("updated");
+		app.data = [];
 		app.buttonEvents();
 		app.pageEvents();
 		$("#ageGenderForm").on("submit", function(e) {
@@ -197,7 +198,7 @@ var app = {
 					if (device.platform === "iOS") {
 						console.log("Compartiendo en iOS!");
 						var social = window.plugins.social;
-						social.share(title, 'http://www.minsalud.gov.co', canvas);
+						social.share("Este servicio médico no tiene ningún costo!", 'http://www.minsalud.gov.co', canvas);
 						app.hideLoadingBox();
 					}
 				}
@@ -355,7 +356,7 @@ var app = {
 		if (app.checkUpdatedData()) {
 			setTimeout(function() {
 				$.mobile.changePage("#age-gender");
-			}, 1000);
+			}, 3000);
 		} else {
 			app.load();
 			//app.localJson();
@@ -442,12 +443,12 @@ var app = {
 		var dbFields = fields.join();
 		tx.executeSql('DROP TABLE IF EXISTS datos');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS datos (id INTEGER PRIMARY KEY AUTOINCREMENT,' + dbFields + ')');
-		tx.executeSql('CREATE TABLE IF NOT EXISTS columnNames (columnName)');
+		// tx.executeSql('CREATE TABLE IF NOT EXISTS columnNames (columnName)');
 
 		console.log("populateDB: Insertando registros en la tabla datos!");
-		for (var j = 0; j < fields.length; j++) {
-			tx.executeSql('INSERT INTO columnNames(columnName) VALUES ("' + fields[j] + '")');
-		}
+		// for (var j = 0; j < fields.length; j++) {
+		// 	tx.executeSql('INSERT INTO columnNames(columnName) VALUES ("' + fields[j] + '")');
+		// }
 
 		app["data1"] = [];
 		$.each(app.data, function(k1, v1) {
