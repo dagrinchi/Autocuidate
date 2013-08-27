@@ -52,6 +52,7 @@
             <div data-role="footer" data-position="fixed">
                 <div data-role="navbar">
                     <ul>
+                        <li><a href="#acerca" data-rel="dialog" data-icon="info" data-theme="b" data-iconpos="top">Acerca</a></li>
                         <li><a href="#" id="filterAgeGender" data-icon="arrow-r" data-theme="b" data-iconpos="top">Continuar</a></li>
                         <li><a href="#updated" data-rel="dialog" data-icon="forward" data-theme="b" data-iconpos="top">Actualizar</a></li>
                     </ul>
@@ -167,8 +168,8 @@
             </div>
         </div>
         <!-- END DETAIL PAGE -->
-        <div data-role="dialog" id="updated" data-overlay-theme="a" data-theme="b" data-dismissible="false">
-            <div data-role="header" data-theme="b" class="ui-corner-top">
+        <div data-role="dialog" id="updated" data-theme="b" data-dismissible="false">
+            <div data-role="header" data-theme="b">
                 <h1>Última fecha de actualización</h1>
             </div>
             <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
@@ -182,6 +183,28 @@
                 <a href="#home" id="update" data-role="button" data-inline="true" data-transition="flow" data-theme="b">Actualizar</a>
             </div>
         </div>
+        <!-- START DIALOG ACERCA DE -->
+        <div data-role="dialog" id="acerca" data-theme="b">
+          <div data-role="header" data-theme="b">
+            <h1>Acerca de...</h1>
+          </div>
+          <div data-role="content" data-theme="d">
+            <h2>Autocuidate <span style="color: #AAA; font-size: 0.5em;">v1.0</span></h2>
+            <p>Ministerio de Salud y Protección Social</p>
+            <p>&copy;2013 - Derechos reservados</p>
+            <p>Tenga en cuenta que esta aplicación requiere acceso a internet y puede consumir recursos de su plan de datos.</p>
+            <div class="ui-grid-a">
+              <div class="ui-block-a">
+                <img src="img/logo-minSalud.png" alt="Ministerio de Salud y Protección Social" style="width: 95%" />
+              </div>
+              <div class="ui-block-b">
+                <img src="img/mintic.png" alt="Ministerio de Tecnologías de la Información y Comunicaciones" style="width: 100%" />
+              </div>
+            </div>
+            <p>David Felipe Campos</p>
+          </div>
+        </div>
+        <!-- END DIALOG ACERCA DE -->
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
