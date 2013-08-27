@@ -147,7 +147,19 @@ var app = {
 	},
 
 	buttonEvents: function() {
-		console.log("buttonEvents: Eventos para botones de categorias y btn continuar!");
+		console.log("buttonEvents: Eventos para botones!");
+
+		$("#update").on("click", function() {
+			app.data = [];
+			app.count = 0;
+			if (app.checkConnection()) {
+				app.load();
+			} else {
+				navigator.notification.alert('No hay una conexión a internet!', function() {
+					app.onDeviceReady();
+				}, 'Atención', 'Reintentar');
+			}
+		});
 
 		$("#filterAgeGender").on("click", function(e) {
 			var data = JSON.stringify($("#ageGenderForm").serializeArray());
@@ -430,6 +442,7 @@ var app = {
 		var u = new Date(updated);
 		if (updated && u > s) {
 			console.log("checkUpdatedData: Los datos están actualizados! " + updated);
+			$("#date").html("<strong>" + updated + "</strong>");
 			return true;
 		} else {
 			console.log("checkUpdatedData: Los datos no están actualizados!");
@@ -460,7 +473,7 @@ var app = {
 				app.createDB();
 			}
 		});
-		$("#progressLabel").html("Cargando +" + app.count + " registros!");
+		//$("#progressLabel").html("Cargando +" + app.count + " registros!");
 		console.log("load: " + url);
 	},
 
@@ -585,6 +598,7 @@ var app = {
 		console.log("successCB: Guardando fecha de actualización!");
 		var updated = new Date();
 		window.localStorage.setItem("updated", updated);
+		$("#date").html("<strong>" + updated + "</strong>");
 		$.mobile.changePage("#age-gender");
 	},
 

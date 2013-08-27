@@ -31,7 +31,7 @@
 	padding-top: 20px;
 }
 
-div[data-role="header"] {
+div[data-role="page"] > div[data-role="header"] {
 	height: 110px;
 	background: url("../img/logo.png") no-repeat #23B9F1 center center;
 	background-size: 240px;
