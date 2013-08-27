@@ -25,7 +25,7 @@ var app = {
 			value: false,
 			sel: false
 		}, {
-			title: "MIS HIJOS",
+			title: "MIS HIJOS MENORES DE 10 AÑOS",
 			quote: "Tus hijos son tu pasión,<br>por eso cuidalos",
 			img: "children.png",
 			id: "btn_mychildren",
