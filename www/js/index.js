@@ -122,6 +122,7 @@ var app = {
 	onDeviceReady: function() {
 		//window.localStorage.removeItem("updated");
 		app.data = [];
+		app.selectEvents();
 		app.buttonEvents();
 		app.pageEvents();
 		$("#ageGenderForm").on("submit", function(e) {
@@ -316,6 +317,19 @@ var app = {
 					});
 				});
 			});
+		});
+	},
+
+	selectEvents: function() {
+		$("#genderSel").on("change", function() {
+			switch ($(this).val()) {
+				case "m":
+				$("#pregnancyField").fadeOut();
+				break;
+				case "f":
+				$("#pregnancyField").fadeIn();
+				break;
+			}
 		});
 	},
 

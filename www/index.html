@@ -43,8 +43,16 @@
                     <div data-role="fieldcontain">
                         <label for="genderSel">Sexo:</label> 
                         <select name="genderSel" id="genderSel">
+                            <option>Seleccione</option>
                             <option value="f">Femenino</option>
                             <option value="m">Masculino</option>
+                        </select>
+                    </div>
+                    <div id="pregnancyField" data-role="fieldcontain" style="display:none;">
+                        <label for="pregnancy">En embarazo:</label> 
+                        <select name="pregnancy" id="pregnancy" data-role="slider">
+                            <option value="no">No</option>
+                            <option value="si">Si</option>
                         </select>
                     </div>
                 </form>
