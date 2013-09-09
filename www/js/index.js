@@ -11,6 +11,7 @@ var app = {
 	data: [],
 
 	selection: {
+		ageRange: "",
 		edad: "",
 		age: "",
 		gender: "",
@@ -126,20 +127,23 @@ var app = {
 		app.selectEvents();
 		app.buttonEvents();
 		app.pageEvents();
+		$("#ageTxt").focusout(function(){ 
+			var val = $(this).val();
+			if (val < 10 || $("#ageSel").val() === 'm') {
+				$("#pregnancyField").fadeOut();
+				$("#pregnancy").val("no").slider("refresh");
+			} else {
+				$("#pregnancyField").fadeIn();
+			}
+		});
+
 		$("#ageGenderForm").on("submit", function(e) {
 			console.log("preventDefault form!");
 			e.preventDefault();
 			return false;
 		});
 		console.log("onDeviceReady: Dispositivo listo!");
-
-		if (app.checkConnection()) {
-			app.initGoogleLoader(app.startApp);
-		} else {
-			navigator.notification.alert('No hay una conexión a internet!', function() {
-				navigator.app.exitApp();
-			}, 'Atención', 'Aceptar');
-		}
+		app.initGoogleLoader(app.startApp);
 	},
 
 	pageEvents: function() {
@@ -154,13 +158,18 @@ var app = {
 		$("#update").on("click", function() {
 			app.data = [];
 			app.count = 0;
-			if (app.checkConnection()) {
-				app.load();
-			} else {
-				navigator.notification.alert('No hay una conexión a internet!', function() {
-					app.onDeviceReady();
-				}, 'Atención', 'Reintentar');
+
+			function update() {
+				if (app.checkConnection()) {
+					app.load();
+				} else {
+					navigator.notification.alert('No hay una conexión a internet!', function() {
+						update();
+					}, 'Atención', 'Reintentar');
+				}
 			}
+
+			update();
 		});
 
 		$("#filterAgeGender").on("click", function(e) {
@@ -174,14 +183,68 @@ var app = {
 				navigator.notification.alert('Para edades superiores a 23 meses se debe realizar la consulta en años!', function() {
 					return false;
 				}, 'Atención', 'Aceptar');
+			} else if (dataObj[0]["value"] < 10 && dataObj[1]["value"] === "a" && dataObj[3]["value"] === "si") {
+				navigator.notification.alert('Digite una edad superior a 10 años para condición de embarazo!', function() {
+					return false;
+				}, 'Atención', 'Aceptar');
+			} else if (dataObj[1]["value"] === "m" && dataObj[3]["value"] === "si") {
+				navigator.notification.alert('Digite una edad superior a 10 años para condición de embarazo!', function() {
+					return false;
+				}, 'Atención', 'Aceptar');
 			} else {
 				app.selection.edad = dataObj[0]["value"];
 				app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
 				app.selection.gender = dataObj[2]["value"];
 				app.selection.pregnant = dataObj[3]["value"];
+
+				switch (app.selection.gender) {
+					case "f":
+						if (app.selection.edad < 10) {
+							app.selection.ageRange = "nins_10_anos";
+						} else if (app.selection.edad >= 10 && app.selection.edad < 29) {
+							app.selection.ageRange = "mujer_joven_10_29_anos";
+						} else if (app.selection.edad >= 29 && app.selection.edad <= 44) {
+							app.selection.ageRange = "mef_29_44_anos";
+						} else if (app.selection.edad >= 45) {
+							app.selection.ageRange = "mujer_adulta_45_anos";
+						}
+						break;
+					case "m":
+						if (app.selection.edad < 10) {
+							app.selection.ageRange = "nins_10_anos";
+						} else if (app.selection.edad >= 10 && app.selection.edad < 29) {
+							app.selection.ageRange = "hombre_joven_10_29_anos";
+						} else if (app.selection.edad >= 29 && app.selection.edad <= 44) {
+							app.selection.ageRange = "hef_29_44_anos";
+						} else if (app.selection.edad >= 45) {
+							app.selection.ageRange = "hombre_adulto_45_anos";
+						}
+					break;
+				}
+
 				app.openDB(queryCategories);
 			}
 		});
+
+		// $("#filterAgeGender").on("click", function(e) {
+		// 	var data = JSON.stringify($("#ageGenderForm").serializeArray());
+		// 	var dataObj = $.parseJSON(data);
+		// 	if (dataObj[0]["value"] === "") {
+		// 		navigator.notification.alert('Debe digitar la edad!', function() {
+		// 			return false;
+		// 		}, 'Atención', 'Aceptar');
+		// 	} else if (dataObj[0]["value"] >= 24 && dataObj[1]["value"] === "m") {
+		// 		navigator.notification.alert('Para edades superiores a 23 meses se debe realizar la consulta en años!', function() {
+		// 			return false;
+		// 		}, 'Atención', 'Aceptar');
+		// 	} else {
+		// 		app.selection.edad = dataObj[0]["value"];
+		// 		app.selection.age = dataObj[0]["value"] + dataObj[1]["value"];
+		// 		app.selection.gender = dataObj[2]["value"];
+		// 		app.selection.pregnant = dataObj[3]["value"];
+		// 		app.openDB(queryCategories);
+		// 	}
+		// });
 
 		function queryCategories(tx) {
 			tx.executeSql(app.buildSql(), [], app.ent.categories, app.errorCB);
@@ -326,81 +389,65 @@ var app = {
 	},
 
 	selectEvents: function() {
+		$("#ageSel").on("change", function() {
+			switch ($(this).val()) {
+				case "m":
+					$("#pregnancyField").fadeOut();
+					$("#pregnancy").val("no").slider("refresh");
+					break;
+				case "a":
+					if ($("#ageTxt").val() < 10) {
+						$("#pregnancyField").fadeOut();
+						$("#pregnancy").val("no").slider("refresh");
+					} else {
+						$("#pregnancyField").fadeIn();
+					}
+					break;
+			}
+		});
+
 		$("#genderSel").on("change", function() {
 			switch ($(this).val()) {
 				case "m":
-				$("#pregnancyField").fadeOut();
-				break;
+					$("#pregnancyField").fadeOut();
+					$("#pregnancy").val("no").slider("refresh");
+					break;
 				case "f":
-				$("#pregnancyField").fadeIn();
-				break;
+					if ($("#ageTxt").val() < 10 || $("#ageSel").val() === 'm') {
+						$("#pregnancyField").fadeOut();
+						$("#pregnancy").val("no").slider("refresh");
+					} else {
+						$("#pregnancyField").fadeIn();
+					}
+					break;
 			}
 		});
 	},
 
 	buildSql: function(category, children) {
 		var sql = "SELECT * FROM datos";
-		sql += " WHERE edad = '" + app.selection.age + "'";
+		sql += " WHERE " + app.selection.ageRange + " = 'SI'";
+
 		switch (app.selection.gender) {
-			case "m":
-				if (app.selection.edad <= 10) {
-					sql += " AND nins_10_anos = 'SI'";
-					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
-				} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
-					sql += " AND hombre_joven_10_29_anos = 'SI'";
-					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
-				} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
-					sql += " AND hef_29_44_anos = 'SI'";
-					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
-				} else if (app.selection.edad > 44) {
-					sql += " AND hombre_adulto_45_anos = 'SI'";
-					sql += " AND (masculino = 'SI' OR femenino = '')";
-					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+			case 'f':
+				sql += " AND femenino = 'SI'";
+				switch (app.selection.pregnant) {
+					case 'si':
+						sql += " AND mi_embarazo = 'X'";
+						sql += " AND en_condicion_embarazo = 'SI'";
+						break;
+					case 'no':
+						sql += " AND mi_embarazo = ''";
+						sql += " AND sin_condicion_embarazo = 'SI'";
+						break;
 				}
-				// sql += " AND mi_embarazo = ''";
 				break;
-			case "f":
-				if (app.selection.edad <= 10) {
-					sql += " AND nins_10_anos = 'SI'";
-					sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
-				} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
-					sql += " AND mujer_joven_10_29_anos = 'SI'";
-					sql += " AND (masculino = '' OR femenino = 'SI')";
-					switch (app.selection.pregnant) {
-						case "si":
-							sql += " AND en_condicion_embarazo = 'SI'";
-							break;
-						case "no":
-							sql += " AND sin_condicion_embarazo = 'SI'";
-							break;
-					}
-				} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
-					sql += " AND mef_29_44_anos = 'SI'";
-					sql += " AND (masculino = '' OR femenino = 'SI')";
-					switch (app.selection.pregnant) {
-						case "si":
-							sql += " AND en_condicion_embarazo = 'SI'";
-							break;
-						case "no":
-							sql += " AND sin_condicion_embarazo = 'SI'";
-							break;
-					}
-				} else if (app.selection.edad > 44) {
-					sql += " AND mujer_adulta_45_anos = 'SI'";
-					sql += " AND (masculino = '' OR femenino = 'SI')";
-					switch (app.selection.pregnant) {
-						case "si":
-							sql += " AND en_condicion_embarazo = 'SI'";
-							break;
-						case "no":
-							sql += " AND sin_condicion_embarazo = 'SI'";
-							break;
-					}
-				}
+			case 'm':
+				sql += " AND masculino = 'SI'";
+				sql += " AND mi_embarazo = ''";
 				break;
 		}
+
 		if (typeof category === "boolean" && category === true) {
 			$.each(app.selection.category, function(k, v) {
 				if (v.sel) {
@@ -409,14 +456,94 @@ var app = {
 			});
 		}
 		if (typeof children === "boolean" && children === true) {
-			sql = "SELECT DISTINCT id, PartitionKey, RowKey, mi_embarazo, mis_hijos, mi_vida_sexual_y_reproductiva, mi_boca, mis_ojos, frase_mi_embarazo, frasemis_hijos, frase_mi_vida_sexual_y_reproductiva, frasemi_boca, frasemis_ojos, actividad_de_prevencion, femenino, masculino, en_condicion_embarazo, sin_condicion_embarazo, no_aplica_condicion_de_embarazo, nins_10_anos, mujer_joven_10_29_anos, hombre_joven_10_29_anos, hef_29_44_anos, mef_29_44_anos, hombre_adulto_45_anos, mujer_adulta_45_anos, titulo, descripcion_de_la_actividad, informacionadic FROM datos\n";
-			sql += " WHERE  mis_hijos = 'X' AND ((edad = '1a') or (edad = '2a') or (edad = '3a') or (edad = '4a') or (edad = '5a') or (edad = '6a') or (edad = '7a') or (edad = '8a') or (edad = '9a') or (edad = '10a') or (edad like '%m%'))\n";
-			sql += " group by PartitionKey\n";
-			sql += " order by PartitionKey\n";
+			sql = "SELECT * FROM datos";
+			sql += " WHERE nins_10_anos = 'SI'";
+			sql += " AND mi_embarazo = ''";
+			sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
 		}
 		console.log(sql);
 		return sql;
 	},
+
+	// buildSql: function(category, children) {
+	// 	var sql = "SELECT * FROM datos";
+	// 	sql += " WHERE edad = '" + app.selection.age + "'";
+	// 	switch (app.selection.gender) {
+	// 		case "m":
+	// 			if (app.selection.edad <= 10) {
+	// 				sql += " AND nins_10_anos = 'SI'";
+	// 				sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+	// 			} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
+	// 				sql += " AND hombre_joven_10_29_anos = 'SI'";
+	// 				sql += " AND (masculino = 'SI' OR femenino = '')";
+	// 				sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+	// 			} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
+	// 				sql += " AND hef_29_44_anos = 'SI'";
+	// 				sql += " AND (masculino = 'SI' OR femenino = '')";
+	// 				sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+	// 			} else if (app.selection.edad > 44) {
+	// 				sql += " AND hombre_adulto_45_anos = 'SI'";
+	// 				sql += " AND (masculino = 'SI' OR femenino = '')";
+	// 				sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+	// 			}
+	// 			// sql += " AND mi_embarazo = ''";
+	// 			break;
+	// 		case "f":
+	// 			if (app.selection.edad <= 10) {
+	// 				sql += " AND nins_10_anos = 'SI'";
+	// 				sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+	// 			} else if (app.selection.edad > 10 && app.selection.edad <= 29) {
+	// 				sql += " AND mujer_joven_10_29_anos = 'SI'";
+	// 				sql += " AND (masculino = '' OR femenino = 'SI')";
+	// 				switch (app.selection.pregnant) {
+	// 					case "si":
+	// 						sql += " AND en_condicion_embarazo = 'SI'";
+	// 						break;
+	// 					case "no":
+	// 						sql += " AND sin_condicion_embarazo = 'SI'";
+	// 						break;
+	// 				}
+	// 			} else if (app.selection.edad > 29 && app.selection.edad <= 44) {
+	// 				sql += " AND mef_29_44_anos = 'SI'";
+	// 				sql += " AND (masculino = '' OR femenino = 'SI')";
+	// 				switch (app.selection.pregnant) {
+	// 					case "si":
+	// 						sql += " AND en_condicion_embarazo = 'SI'";
+	// 						break;
+	// 					case "no":
+	// 						sql += " AND sin_condicion_embarazo = 'SI'";
+	// 						break;
+	// 				}
+	// 			} else if (app.selection.edad > 44) {
+	// 				sql += " AND mujer_adulta_45_anos = 'SI'";
+	// 				sql += " AND (masculino = '' OR femenino = 'SI')";
+	// 				switch (app.selection.pregnant) {
+	// 					case "si":
+	// 						sql += " AND en_condicion_embarazo = 'SI'";
+	// 						break;
+	// 					case "no":
+	// 						sql += " AND sin_condicion_embarazo = 'SI'";
+	// 						break;
+	// 				}
+	// 			}
+	// 			break;
+	// 	}
+	// 	if (typeof category === "boolean" && category === true) {
+	// 		$.each(app.selection.category, function(k, v) {
+	// 			if (v.sel) {
+	// 				sql += " AND " + v.column + " = 'X'";
+	// 			}
+	// 		});
+	// 	}
+	// 	if (typeof children === "boolean" && children === true) {
+	// 		sql = "SELECT DISTINCT id, PartitionKey, RowKey, mi_embarazo, mis_hijos, mi_vida_sexual_y_reproductiva, mi_boca, mis_ojos, frase_mi_embarazo, frasemis_hijos, frase_mi_vida_sexual_y_reproductiva, frasemi_boca, frasemis_ojos, actividad_de_prevencion, femenino, masculino, en_condicion_embarazo, sin_condicion_embarazo, no_aplica_condicion_de_embarazo, nins_10_anos, mujer_joven_10_29_anos, hombre_joven_10_29_anos, hef_29_44_anos, mef_29_44_anos, hombre_adulto_45_anos, mujer_adulta_45_anos, titulo, descripcion_de_la_actividad, informacionadic FROM datos\n";
+	// 		sql += " WHERE  mis_hijos = 'X' AND ((edad = '1a') or (edad = '2a') or (edad = '3a') or (edad = '4a') or (edad = '5a') or (edad = '6a') or (edad = '7a') or (edad = '8a') or (edad = '9a') or (edad = '10a') or (edad like '%m%'))\n";
+	// 		sql += " group by PartitionKey\n";
+	// 		sql += " order by PartitionKey\n";
+	// 	}
+	// 	console.log(sql);
+	// 	return sql;
+	// },
 
 	checkConnection: function() {
 		console.log("checkConnection: Comprobando conectividad a internet!");
@@ -438,23 +565,25 @@ var app = {
 			}
 		};
 
-		var wf = document.createElement('script');
-		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-		wf.type = 'text/javascript';
-		wf.async = 'true';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(wf, s);
+		if (app.checkConnection()) {
+			var wf = document.createElement('script');
+			wf.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+			wf.type = 'text/javascript';
+			wf.async = 'true';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(wf, s);
+		}
 
 		cb();
 
-		var script = document.createElement("script");
-		script.src = "https://www.google.com/jsapi";
-		script.type = "text/javascript";
-		document.getElementsByTagName("head")[0].appendChild(script);
+		// var script = document.createElement("script");
+		// script.src = "https://www.google.com/jsapi";
+		// script.type = "text/javascript";
+		// document.getElementsByTagName("head")[0].appendChild(script);
 
-		script.addEventListener("error", function(e) {
-			console.log("Error: " + e);
-		}, false);
+		// script.addEventListener("error", function(e) {
+		// 	console.log("Error: " + e);
+		// }, false);
 	},
 
 	startApp: function() {
@@ -558,73 +687,83 @@ var app = {
 		// 	tx.executeSql('INSERT INTO columnNames(columnName) VALUES ("' + fields[j] + '")');
 		// }
 
-		app["data1"] = [];
 		$.each(app.data, function(k1, v1) {
-			var item = {};
-			$.each(v1, function(k2, v2) {
-				item[k2] = v2;
-				if (k2 === "edad") {
-					if (item[k2].search(";") !== -1) {
-						item[k2] = v2.split(";");
-						$.each(item[k2], function(k3, v3) {
-							if (v3.search("-") !== -1) {
-								item[k2][k3] = create(v3);
-							}
-						});
-					} else if (item[k2].search("-") !== -1) {
-						item[k2] = create(item[k2]);
-					} else {
-						item[k2] = v2;
-					}
-				}
-			});
-			app.data1.push(item);
-		});
-
-		function create(element) {
-			var result = [];
-			var ran = element.split("-");
-			var lett1 = ran[0].substring(ran[0].length - 1, ran[0].length);
-			var val1 = ran[0].match(/\d/g);
-			val1 = val1.join("");
-			var val2 = ran[1].match(/\d/g);
-			val2 = val2.join("");
-			for (var i = parseInt(val1); i <= parseInt(val2); i++) {
-				result.push(i + lett1);
-			}
-			return result;
-		}
-
-		var sql = "";
-		$.each(app.data1, function(k4, v4) {
-
 			var values = [];
-			var rows = [];
-
-			$.each(v4, function(k5, v5) {
-				if (v5 instanceof Array) {
-					values.push(v5);
-				} else {
-					values.push('"' + v5 + '"');
-				}
+			$.each(v1, function(k2, v2) {
+				values.push('"' + v2 + '"');
 			});
-
-			$.each(values, function(k6, v6) {
-				if (v6 instanceof Array) {
-					var val = [];
-					$.each(v6, function(k7, v7) {
-						rows.push(values);
-						val.push(v7);
-					});
-
-					$.each(rows, function(k8, v8) {
-						rows[k8][k6] = '"' + val[k8] + '"';
-						sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + rows[k8].join() + '); \n';
-						tx.executeSql(sql);
-					});
-				}
-			});
+			var dbValues = values.join();
+			var sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + dbValues + ')';
+			tx.executeSql(sql);
 		});
+
+		// app["data1"] = [];
+		// $.each(app.data, function(k1, v1) {
+		// 	var item = {};
+		// 	$.each(v1, function(k2, v2) {
+		// 		item[k2] = v2;
+		// 		if (k2 === "edad") {
+		// 			if (item[k2].search(";") !== -1) {
+		// 				item[k2] = v2.split(";");
+		// 				$.each(item[k2], function(k3, v3) {
+		// 					if (v3.search("-") !== -1) {
+		// 						item[k2][k3] = create(v3);
+		// 					}
+		// 				});
+		// 			} else if (item[k2].search("-") !== -1) {
+		// 				item[k2] = create(item[k2]);
+		// 			} else {
+		// 				item[k2] = v2;
+		// 			}
+		// 		}
+		// 	});
+		// 	app.data1.push(item);
+		// });
+
+		// function create(element) {
+		// 	var result = [];
+		// 	var ran = element.split("-");
+		// 	var lett1 = ran[0].substring(ran[0].length - 1, ran[0].length);
+		// 	var val1 = ran[0].match(/\d/g);
+		// 	val1 = val1.join("");
+		// 	var val2 = ran[1].match(/\d/g);
+		// 	val2 = val2.join("");
+		// 	for (var i = parseInt(val1); i <= parseInt(val2); i++) {
+		// 		result.push(i + lett1);
+		// 	}
+		// 	return result;
+		// }
+
+		// var sql = "";
+		// $.each(app.data1, function(k4, v4) {
+
+		// 	var values = [];
+		// 	var rows = [];
+
+		// 	$.each(v4, function(k5, v5) {
+		// 		if (v5 instanceof Array) {
+		// 			values.push(v5);
+		// 		} else {
+		// 			values.push('"' + v5 + '"');
+		// 		}
+		// 	});
+
+		// 	$.each(values, function(k6, v6) {
+		// 		if (v6 instanceof Array) {
+		// 			var val = [];
+		// 			$.each(v6, function(k7, v7) {
+		// 				rows.push(values);
+		// 				val.push(v7);
+		// 			});
+
+		// 			$.each(rows, function(k8, v8) {
+		// 				rows[k8][k6] = '"' + val[k8] + '"';
+		// 				sql = 'INSERT INTO datos (' + dbFields + ') VALUES (' + rows[k8].join() + '); \n';
+		// 				tx.executeSql(sql);
+		// 			});
+		// 		}
+		// 	});
+		// });
 	},
 
 	successCB: function() {
@@ -671,8 +810,8 @@ var app = {
 			console.log("ent.categories: Valida si hay resultados!");
 			var len = results.rows.length;
 			if (len === 0) {
-				navigator.notification.alert('No se encuentran resultados con tu búsqueda!', function() {
-					app.hideLoadingBox();
+				app.hideLoadingBox();
+				navigator.notification.alert('No se encuentran resultados que coincidan con tu búsqueda!', function() {
 				}, 'Atención', 'Aceptar');
 				return false;
 			}
@@ -789,8 +928,8 @@ var app = {
 			console.log("ent.activities: Valida si hay resultados!");
 			var len = results.rows.length;
 			if (len === 0) {
-				navigator.notification.alert('No se encuentran resultados con tu búsqueda!', function() {
-					app.hideLoadingBox();
+				app.hideLoadingBox();
+				navigator.notification.alert('No se encuentran resultados que coincidan con tu búsqueda!', function() {
 				}, 'Atención', 'Aceptar');
 				return false;
 			}
@@ -963,6 +1102,10 @@ var app = {
 		$element.find('div').animate({
 			width: progressBarWidth
 		}, 20).html(percent + "%&nbsp;");
+
+		if (percent === 100) {
+			$element.find('div').width(0);
+		}
 	}
 };
 
