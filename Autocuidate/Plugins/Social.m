@@ -6,6 +6,7 @@
 //
 
 #import "Social.h"
+#import "MyUIActivityViewController.h"
 #import <Cordova/CDV.h>
 
 @interface Social ()
@@ -51,10 +52,11 @@
     UIActivity *activity = [[UIActivity alloc] init];
     
     NSArray *applicationActivities = [[NSArray alloc] initWithObjects:activity, nil];
-    UIActivityViewController *activityVC =
-    [[UIActivityViewController alloc] initWithActivityItems:activityItems
+    MyUIActivityViewController *activityVC =
+    [[MyUIActivityViewController alloc] initWithActivityItems:activityItems
                                       applicationActivities:applicationActivities];
     [self.viewController presentViewController:activityVC animated:YES completion:nil];
+    
 }
 
 @end
