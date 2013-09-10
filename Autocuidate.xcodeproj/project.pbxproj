@@ -46,6 +46,7 @@
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		6338B76917A9675B002B602D /* Canvas2ImagePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 6338B76817A9675B002B602D /* Canvas2ImagePlugin.m */; };
 		63E31B4D17AE8BD800D109E3 /* Social.m in Sources */ = {isa = PBXBuildFile; fileRef = 63E31B4C17AE8BD800D109E3 /* Social.m */; };
+		A93F6F7817DF650300B11930 /* MyUIActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93F6F7717DF650300B11930 /* MyUIActivityViewController.m */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		F840E1F1165FE0F500CFE078 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = F840E1F0165FE0F500CFE078 /* config.xml */; };
 /* End PBXBuildFile section */
@@ -116,6 +117,8 @@
 		63E31B4B17AE8BD800D109E3 /* Social.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Social.h; sourceTree = "<group>"; };
 		63E31B4C17AE8BD800D109E3 /* Social.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Social.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Autocuidate-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Autocuidate-Info.plist"; path = "../Autocuidate-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A93F6F7617DF650300B11930 /* MyUIActivityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyUIActivityViewController.h; sourceTree = "<group>"; };
+		A93F6F7717DF650300B11930 /* MyUIActivityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyUIActivityViewController.m; sourceTree = "<group>"; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Autocuidate/config.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -268,6 +271,8 @@
 				63E31B4C17AE8BD800D109E3 /* Social.m */,
 				6338B76717A9675B002B602D /* Canvas2ImagePlugin.h */,
 				6338B76817A9675B002B602D /* Canvas2ImagePlugin.m */,
+				A93F6F7617DF650300B11930 /* MyUIActivityViewController.h */,
+				A93F6F7717DF650300B11930 /* MyUIActivityViewController.m */,
 			);
 			name = Plugins;
 			path = Autocuidate/Plugins;
@@ -438,6 +443,7 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				6338B76917A9675B002B602D /* Canvas2ImagePlugin.m in Sources */,
 				63E31B4D17AE8BD800D109E3 /* Social.m in Sources */,
+				A93F6F7817DF650300B11930 /* MyUIActivityViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
