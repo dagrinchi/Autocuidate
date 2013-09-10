@@ -1011,20 +1011,45 @@ var app = {
 			html += '</div>\n';
 
 			html += '<div data-role="controlgroup" data-type="vertical" class="ages">\n';
-			html += '<p>Rango de edad:</p>\n';
+			html += '<p>Edad:</p>\n';
 
-			if (item['nins_10_anos'] === "SI") {
-				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">0-10 Años</a>\n';
+			// if (item['nins_10_anos'] === "SI") {
+			// 	html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">0-10 Años</a>\n';
+			// }
+			// if (item['mujer_joven_10_29_anos'] === "SI" || item['hombre_joven_10_29_anos'] === "SI") {
+			// 	html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">10-29 Años</a>\n';
+			// }
+			// if (item['mef_29_44_anos'] === "SI" || item['hef_29_44_anos'] === "SI") {
+			// 	html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">29-44 Años</a>\n';
+			// }
+			// if (item['hombre_adulto_45_anos'] === "SI" || item['mujer_adulta_45_anos'] === "SI") {
+			// 	html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Más de 45 Años</a>\n';
+			// }
+			var ageRange1 = [];
+			var ageRange2 = [];
+			var a;
+			var b;
+			if (item['edad'].search(";") !== -1) {
+				ageRange1 = item['edad'].split(";");
+				for (l = 0; l < ageRange1.length; l++) {
+					if (ageRange1[l].search("a") !== -1) {
+						html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">' + ageRange1[l].replace("a", " Años") + '</a>\n';
+					}
+					if (ageRange1[l].search("m") !== -1) {
+						html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">' + ageRange1[l].replace("m", " Meses") + '</a>\n';
+					}
+				}
+			} else if (item['edad'].search("-") !== -1) {
+				ageRange2 = item['edad'].split("-");
+				if (ageRange2[0].search("a") !== -1) {
+					a = ageRange2[0].replace("a", " Años");
+				}
+				if (ageRange2[1].search("a") !== -1) {
+					b = ageRange2[1].replace("a", " Años");
+				}
+				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">' + a + " a " + b + '</a>\n';
 			}
-			if (item['mujer_joven_10_29_anos'] === "SI" || item['hombre_joven_10_29_anos'] === "SI") {
-				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">10-29 Años</a>\n';
-			}
-			if (item['mef_29_44_anos'] === "SI" || item['hef_29_44_anos'] === "SI") {
-				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">29-44 Años</a>\n';
-			}
-			if (item['hombre_adulto_45_anos'] === "SI" || item['mujer_adulta_45_anos'] === "SI") {
-				html += '<a href="#" data-role="button" data-icon="check" data-iconpos="right">Más de 45 Años</a>\n';
-			}
+
 			html += '</div>\n';
 
 			html += '</div>\n';
