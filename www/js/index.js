@@ -432,13 +432,17 @@ var app = {
 			case 'f':
 				sql += " AND femenino = 'SI'";
 				switch (app.selection.pregnant) {
-					case 'si':
+					case 'si':						
 						sql += " AND mi_embarazo = 'X'";
 						sql += " AND en_condicion_embarazo = 'SI'";
 						break;
 					case 'no':
 						sql += " AND mi_embarazo = ''";
-						sql += " AND sin_condicion_embarazo = 'SI'";
+						if (app.selection.ageRange === "nins_10_anos") {
+							sql += " AND no_aplica_condicion_de_embarazo = 'SI'";
+						} else {
+							sql += " AND sin_condicion_embarazo = 'SI'";							
+						}						
 						break;
 				}
 				break;
